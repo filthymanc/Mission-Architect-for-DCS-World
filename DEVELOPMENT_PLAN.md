@@ -14,14 +14,15 @@ We have entered the final hardening phase before public release on GitHub Pages.
 
 *   **Goal:** Ensure the repository is clean, professional, and ready for public hosting on GitHub Pages.
 *   **Audit & Cleanup:**
-    *   Remove deprecated files (e.g., `catalogs.ts`, temporary provenance drafts).
-    *   Consolidate internal analysis notes (`DML_PROVENANCE_ANALYSIS.md`, etc.) into a cohesive Developer Wiki or remove if no longer needed.
-    *   Verify `manifest.json` and PWA settings for "Add to Homescreen" reliability.
+    *   [x] Remove deprecated files (e.g., `catalogs.ts`, temporary provenance drafts).
+    *   [x] Consolidate internal analysis notes.
+    *   [x] Verify `manifest.json` and PWA settings.
 *   **Documentation:**
-    *   Update `README.md` with clear installation/hosting instructions for end-users.
-    *   Verify `LICENSE` and `NOTICE.md` compliance.
+    *   [x] Update `README.md` with clear installation/hosting instructions for end-users.
+    *   [x] Verify `LICENSE` and `NOTICE.md` compliance.
 *   **Offline Strategy (The Bundler Migration):**
-    *   Prepare the codebase for migration from CDN imports (`esm.sh`) to a bundled build (Vite/Webpack). This is required to solve the Phase 9 offline failure.
+    *   [x] **COMPLETED**: Migrated to **Vite** build system to resolve GitHub Pages blank screen issues and enable robust offline caching.
+    *   [ ] Verify PWA Service Worker cache with hashed assets (Next Step).
 
 ---
 
