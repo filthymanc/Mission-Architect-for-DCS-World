@@ -26,10 +26,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: 'npm'
+          # Cache removed because package-lock.json does not exist on tablet/web edits
           
       - name: Install dependencies
-        run: npm ci
+        # 'npm install' generates the lockfile on the fly, unlike 'npm ci'
+        run: npm install
         
       - name: Build
         run: npm run build
