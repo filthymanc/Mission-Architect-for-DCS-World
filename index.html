@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Mission Architect for DCS</title>
+    
+    <!-- PWA / Mobile Settings -->
+    <!-- path fixed: relative -->
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/2708.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#0f172a" />
+    
+    <!-- Social / OpenGraph -->
+    <meta property="og:title" content="Mission Architect for DCS" />
+    <meta property="og:description" content="AI-powered assistant for building DCS World missions using MOOSE and DML." />
+    <meta property="og:type" content="website" />
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #0f172a; /* Slate 900 */
+        color: #e2e8f0; /* Slate 200 */
+        overscroll-behavior-y: none; /* Prevent rubber-banding on iOS */
+      }
+      code {
+        font-family: 'JetBrains Mono', monospace;
+      }
+      /* Custom scrollbar for dark theme */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1e293b; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #475569; 
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #64748b; 
+      }
+      
+      /* --- ACCESSIBILITY: GLOBAL FOCUS RING --- */
+      /* Replaces default blue browser outline with Theme Emerald */
+      :focus-visible {
+        outline: 2px solid #10b981; /* emerald-500 */
+        outline-offset: 2px;
+      }
+      /* Ensure focus works on non-input elements with tabindex */
+      [tabindex]:focus {
+        outline: 2px solid #10b981;
+        outline-offset: 2px;
+      }
+
+      /* Markdown Styles */
+      .markdown-body ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+      .markdown-body ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
+      .markdown-body p { margin-bottom: 1rem; }
+      .markdown-body h1, .markdown-body h2, .markdown-body h3 { font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.5rem; color: #a7f3d0; }
+      .markdown-body a { color: #34d399; text-decoration: underline; }
+      .markdown-body table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; border: 1px solid #334155; }
+      .markdown-body th, .markdown-body td { border: 1px solid #334155; padding: 0.5rem; text-align: left; }
+      .markdown-body th { background-color: #1e293b; }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.2.0",
+    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+    "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime",
+    "react-dom": "https://esm.sh/react-dom@18.2.0",
+    "react-dom/": "https://esm.sh/react-dom@18.2.0/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.35.0",
+    "react-markdown": "https://esm.sh/react-markdown@9.0.1?deps=react@18.2.0,react-dom@18.2.0",
+    "remark-gfm": "https://esm.sh/remark-gfm@4.0.0?deps=react@18.2.0,react-dom@18.2.0",
+    "react/": "https://esm.sh/react@^19.2.3/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          // path fixed: relative
+          navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('SW registered: ', reg.scope))
+            .catch(err => console.log('SW registration failed: ', err));
+        });
+      }
+    </script>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
+    
