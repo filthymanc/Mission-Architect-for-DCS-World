@@ -18,7 +18,7 @@
     <meta property="og:description" content="AI-powered assistant for building DCS World missions using MOOSE and DML." />
     <meta property="og:type" content="website" />
     
-    <!-- Tailwind is now handled by the bundler, but keeping CDN for quick styling until you configure postcss completely -->
+    <!-- Keeping Tailwind CDN for immediate styling compatibility without complex config -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -72,14 +72,14 @@
 <script type="importmap">
 {
   "imports": {
-    "react/": "https://esm.sh/react@^19.2.4/",
     "react": "https://esm.sh/react@^19.2.4",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/",
     "@google/genai": "https://esm.sh/@google/genai@^1.38.0",
+    "react-markdown": "https://esm.sh/react-markdown@^10.1.0",
     "remark-gfm": "https://esm.sh/remark-gfm@^4.0.1",
-    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
     "vite": "https://esm.sh/vite@^7.3.1",
-    "react-markdown": "https://esm.sh/react-markdown@^10.1.0"
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
   }
 }
 </script>
@@ -100,3 +100,4 @@
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>
+    
