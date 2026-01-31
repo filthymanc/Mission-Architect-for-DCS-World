@@ -22,6 +22,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+      /* FULL SCREEN RESET: LOCKS VIEWPORT */
+      html, body, #root {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /* Critical: Prevent document scroll */
+      }
+
       body {
         font-family: 'Inter', sans-serif;
         background-color: #0f172a; /* Slate 900 */
@@ -69,6 +78,7 @@
       .markdown-body th, .markdown-body td { border: 1px solid #334155; padding: 0.5rem; text-align: left; }
       .markdown-body th { background-color: #1e293b; }
     </style>
+
 
 </head>
   <body>
