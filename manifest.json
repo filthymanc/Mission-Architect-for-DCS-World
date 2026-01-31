@@ -3,7 +3,8 @@
   "name": "Mission Architect for DCS",
   "short_name": "Mission Architect",
   "description": "AI-powered Mission Building Assistant for DCS World (MOOSE/DML).",
-  "start_url": ".",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
@@ -26,4 +27,3 @@
     }
   ]
 }
-    
