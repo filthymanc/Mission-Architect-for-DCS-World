@@ -1,5 +1,5 @@
 
-const CACHE_NAME = 'dcs-architect-v2.2-phase10';
+const CACHE_NAME = 'dcs-architect-v2.3-phase11-fix1';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -76,4 +76,3 @@ self.addEventListener('fetch', (event) => {
     );
   }
 });
-    
