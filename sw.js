@@ -1,9 +1,14 @@
 
-const CACHE_NAME = 'dcs-architect-v2.3-phase11-fix1';
+const CACHE_NAME = 'dcs-architect-v2.3-phase11-fix2-absolute';
+
+// IMPORTANT: These must match the manifest start_url and scope exactly
+// to ensure the PWA matches the cache key when offline.
+const REPO_PATH = '/Mission-Architect-for-DCS-World';
+
 const ASSETS_TO_CACHE = [
-  './',
-  './index.html',
-  './manifest.json'
+  REPO_PATH + '/',
+  REPO_PATH + '/index.html',
+  REPO_PATH + '/manifest.json'
 ];
 
 // Install: Cache core assets
