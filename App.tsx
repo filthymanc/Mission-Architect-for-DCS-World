@@ -346,7 +346,7 @@ const AppContent: React.FC = () => {
 
   return (
     <div 
-        className="flex h-screen bg-slate-900 text-slate-200 overflow-hidden font-sans selection:bg-emerald-500/30 select-none"
+        className="flex h-full w-full bg-slate-900 text-slate-200 overflow-hidden font-sans selection:bg-emerald-500/30 select-none"
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
