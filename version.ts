@@ -1,7 +1,7 @@
 
 export const APP_NAME = "Mission Architect for DCS";
-export const APP_VERSION = "2.2";
-export const APP_PHASE = "Stable"; 
+export const APP_VERSION = "2.3";
+export const APP_PHASE = "Public Release"; 
 export const APP_FULL_NAME = `${APP_NAME} v${APP_VERSION}`;
 
 // Storage Keys
