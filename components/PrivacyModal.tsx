@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 
@@ -41,8 +42,8 @@ const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) => {
           <div className="p-4 bg-slate-900 rounded-lg border border-slate-800">
              <h3 className="font-bold text-emerald-400 mb-2 uppercase text-xs tracking-wider">Zero-Logging Architecture</h3>
              <p>
-                This application runs entirely in your web browser. 
-                <strong className="text-white"> We (the developers) cannot see your missions, scripts, or API keys.</strong>
+                This application runs entirely in your web browser (Client-Side). 
+                <strong className="text-white"> We (the developers/host) cannot see your missions, scripts, or API keys.</strong>
              </p>
           </div>
 
@@ -51,8 +52,14 @@ const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) => {
                 <h4 className="font-bold text-white mb-1">API Key Security</h4>
                 <p className="text-slate-400 text-xs">
                     Your Google Gemini API Key is stored in your browser's local storage (`localStorage`). 
-                    It is sent directly from your device to Google's servers for authentication. 
-                    It never passes through our servers.
+                    It is never sent to the GitHub Pages host. It is only sent directly to Google APIs for authentication.
+                </p>
+             </div>
+             <div>
+                <h4 className="font-bold text-white mb-1">AI Processing</h4>
+                <p className="text-slate-400 text-xs">
+                    While the host sees nothing, your chat prompts are processed by <strong className="text-slate-200">Google's Gemini API</strong>. 
+                    Please refer to Google's Generative AI Terms of Service regarding data usage.
                 </p>
              </div>
              <div>

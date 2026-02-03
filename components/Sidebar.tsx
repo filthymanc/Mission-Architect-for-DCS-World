@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Session } from '../types';
 import { clearAllData } from '../services/storageService';
@@ -16,7 +17,8 @@ interface SidebarProps {
   onExportData: () => void;
   onImportData: () => void;
   onOpenPrivacy: () => void;
-  onOpenShortcuts: () => void; // New Prop
+  onOpenShortcuts: () => void;
+  onOpenNotices: () => void; // New Prop
   isLoading: boolean;
 }
 
@@ -34,6 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   onImportData,
   onOpenPrivacy,
   onOpenShortcuts,
+  onOpenNotices,
   isLoading
 }) => {
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -362,8 +365,15 @@ const Sidebar: React.FC<SidebarProps> = ({
                 )}
             </button>
 
-            <div className="text-[10px] text-slate-600 text-center">
+            <div className="text-[10px] text-slate-600 text-center flex flex-col items-center gap-1">
                 <p>v{APP_VERSION} {APP_PHASE}</p>
+                <p className="opacity-75">Development by the filthymanc</p>
+                <button 
+                    onClick={onOpenNotices}
+                    className="hover:text-slate-400 underline decoration-slate-700 underline-offset-2 transition-colors"
+                >
+                    Third-Party Licenses
+                </button>
             </div>
         </div>
       </aside>

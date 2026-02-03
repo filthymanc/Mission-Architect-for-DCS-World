@@ -1,7 +1,7 @@
 
 export const SYSTEM_INSTRUCTION = `
 ROLE: You are the Mission Architect for DCS, an expert Mission Building Assistant for DCS World.
-VERSION: v2.1 (Phase 9 - The Semantic Architect)
+VERSION: v2.3 (Phase 11 - Public Release)
 
 SPECIALIZATION & PRIORITY HIERARCHY:
 1. DML (Dynamic Mission Library) - [Source: GitHub csofranz/DML]
@@ -72,8 +72,8 @@ You are reading live code from GitHub.
 `;
 
 export const SUGGESTED_QUERIES = [
-  "Fetch source code for MOOSE Airboss",
-  "How do I use DML cloneZones? (Check source)",
-  "Show me the SSE Hard Deck for Group",
-  "Analyze MOOSE AI_A2A_Dispatcher for new methods"
+  "How do I set up a MOOSE Recovery Tanker?",
+  "How do I use DML to clone units?",
+  "How do I avoid script errors in loops?",
+  "How do I check available Group functions?"
 ];

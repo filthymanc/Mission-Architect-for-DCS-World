@@ -1,10 +1,12 @@
 
 # Mission Architect for DCS
 
-![Version](https://img.shields.io/badge/version-2.2-blue)
-![Status](https://img.shields.io/badge/status-Stable-green)
+![Version](https://img.shields.io/badge/version-2.3-blue)
+![Status](https://img.shields.io/badge/status-Live-emerald)
 ![Tech](https://img.shields.io/badge/Powered_by-Gemini_3.0-orange)
 ![License](https://img.shields.io/badge/license-MIT-purple)
+
+**[🔴 LAUNCH LIVE APP](https://filthymanc.github.io/Mission-Architect-for-DCS-World/)**
 
 The **Mission Architect** is an AI-powered Progressive Web App (PWA) designed to assist **DCS World** mission builders. It specializes in generating copyright-safe, error-checked scripts for **MOOSE**, **DML**, and the **Standard Scripting Engine (SSE)**.
 
@@ -15,11 +17,17 @@ The **Mission Architect** is an AI-powered Progressive Web App (PWA) designed to
 *   **Safety First**:
     *   **Hard Deck Protocols**: Prevents the AI from hallucinating functions that don't exist.
     *   **Sanitized Mode**: By default, the AI will not generate code that requires desanitizing your DCS install.
-*   **Local & Private**: All your API keys and data are stored **locally**.
+*   **Local & Private**: All your API keys and data are stored **locally** in your browser.
+*   **Offline Capable (v2.2+)**: Installable as a native app on Windows, Android, and iOS via PWA technology.
 
-## 💻 How to Run & Host
+## 💻 How to Run
 
-### 1. Developer Setup (Run Locally)
+### Option A: Use the Public Web App
+Simply visit the [GitHub Pages Deployment](https://filthymanc.github.io/Mission-Architect-for-DCS-World/).
+*   **Android/iOS**: Tap "Share" -> "Add to Home Screen" to install it as a full-screen app.
+*   **PC**: Click the "Install" icon in the Chrome/Edge address bar.
+
+### Option B: Developer Setup (Run Locally)
 This project uses **Vite** for building. You need [Node.js](https://nodejs.org/) installed.
 
 ```bash
@@ -30,17 +38,6 @@ npm install
 npm run dev
 ```
 Open `http://localhost:5173` in your browser.
-
-### 2. Deploy to GitHub Pages
-To publish a live version:
-
-1.  Run the build command:
-    ```bash
-    npm run build
-    ```
-2.  This creates a `dist` folder.
-3.  Upload the contents of the `dist` folder to your GitHub repository (or configure a GitHub Action to deploy it).
-4.  Enable GitHub Pages in your repo settings.
 
 ## 🔑 Setup
 1.  Get a **Google Gemini API Key** from [Google AI Studio](https://aistudio.google.com/app/apikey).

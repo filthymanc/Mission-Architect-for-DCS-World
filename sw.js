@@ -1,5 +1,5 @@
 
-const CACHE_NAME = 'dcs-architect-v2.3-phase11-fix2-absolute';
+const CACHE_NAME = 'dcs-architect-v2.3-phase11-release-final-patch2';
 
 // IMPORTANT: These must match the manifest start_url and scope exactly
 // to ensure the PWA matches the cache key when offline.
@@ -44,7 +44,7 @@ self.addEventListener('fetch', (event) => {
   // Check if request is for external dependencies
   const isExternalAsset = 
     url.hostname.includes('esm.sh') || 
-    url.hostname.includes('cdn.tailwindcss.com') ||
+    url.hostname.includes('cdn.tailwindcss.com') || 
     url.hostname.includes('fonts.googleapis.com') ||
     url.hostname.includes('fonts.gstatic.com');
 

@@ -1,7 +1,7 @@
 
 /**
  * DCS Standard Scripting Engine (SSE) Hard Deck
- * v2.1 Phase 9 - Safety Layer
+ * Version: v2.3 Public Release
  * 
  * This file contains Functional Specifications (Type Definitions) for the core DCS classes.
  * It serves as a "Hard Deck" to prevent the AI from hallucinating methods that do not exist.
