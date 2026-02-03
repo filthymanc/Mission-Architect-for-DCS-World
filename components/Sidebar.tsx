@@ -367,6 +367,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
             <div className="text-[10px] text-slate-600 text-center flex flex-col items-center gap-1">
                 <p>v{APP_VERSION} {APP_PHASE}</p>
+                <p className="opacity-75">Architected by [Your Name]</p>
                 <button 
                     onClick={onOpenNotices}
                     className="hover:text-slate-400 underline decoration-slate-700 underline-offset-2 transition-colors"

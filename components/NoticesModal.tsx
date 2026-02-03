@@ -24,7 +24,7 @@ const LibraryItem: React.FC<{ name: string; author: string; license: string; lin
         </a>
         <span className="text-[10px] px-1.5 py-0.5 bg-slate-800 text-slate-400 rounded border border-slate-700">{license}</span>
     </div>
-    <div className="text-xs text-slate-500 mb-1">by {author}</div>
+    <div className="text-xs text-slate-500 mb-1">{author}</div>
     {desc && <div className="text-xs text-slate-400 leading-relaxed mt-2 pt-2 border-t border-slate-800/50">{desc}</div>}
   </div>
 );
@@ -65,17 +65,27 @@ const NoticesModal: React.FC<NoticesModalProps> = ({ isOpen, onClose }) => {
             This application utilizes several third-party libraries and frameworks. We gratefully acknowledge the contributions of the following open-source projects.
           </div>
 
+          <Section title="Development Team">
+             <LibraryItem 
+                name="[Your Name]"
+                author="Lead Architect"
+                license="MIT"
+                link="https://github.com/[your-github-profile]"
+                desc="Concept, Design, and Full-Stack Implementation."
+             />
+          </Section>
+
           <Section title="DCS World Frameworks">
              <LibraryItem 
                 name="MOOSE (Mission Object Oriented Scripting Environment)"
-                author="FlightControl-Master & Community"
+                author="by FlightControl-Master & Community"
                 license="GNU GPL v3.0"
                 link="https://github.com/FlightControl-Master/MOOSE"
                 desc="A mission design framework for DCS World that allows mission designers to write missions using object-oriented scripting."
              />
              <LibraryItem 
                 name="DML (Dynamic Mission Library)"
-                author="Christian Franz (cfrag)"
+                author="by Christian Franz (cfrag)"
                 license="MIT (Implied)"
                 link="https://github.com/csofranz/DML"
                 desc="A library for DCS World mission creation that emphasizes Mission Editor attributes over complex Lua scripting."
@@ -85,25 +95,25 @@ const NoticesModal: React.FC<NoticesModalProps> = ({ isOpen, onClose }) => {
           <Section title="Web Application Stack">
              <LibraryItem 
                 name="React"
-                author="Meta Platforms, Inc."
+                author="by Meta Platforms, Inc."
                 license="MIT"
                 link="https://react.dev/"
              />
              <LibraryItem 
                 name="Google GenAI SDK"
-                author="Google LLC"
+                author="by Google LLC"
                 license="Apache 2.0"
                 link="https://github.com/google/generative-ai-js"
              />
              <LibraryItem 
                 name="Tailwind CSS"
-                author="Tailwind Labs Inc."
+                author="by Tailwind Labs Inc."
                 license="MIT"
                 link="https://tailwindcss.com/"
              />
              <LibraryItem 
                 name="React Markdown"
-                author="Titus Wormer & Community"
+                author="by Titus Wormer & Community"
                 license="MIT"
                 link="https://github.com/remarkjs/react-markdown"
              />
