@@ -67,8 +67,8 @@ const NoticesModal: React.FC<NoticesModalProps> = ({ isOpen, onClose }) => {
 
           <Section title="Development Team">
              <LibraryItem 
-                name="[Your Name]"
-                author="Lead Architect"
+                name="The filthymanc"
+                author="Developer"
                 license="MIT"
                 link="https://github.com/[your-github-profile]"
                 desc="Concept, Design, and Full-Stack Implementation."
