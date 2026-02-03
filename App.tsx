@@ -416,7 +416,7 @@ const AppContent: React.FC = () => {
             </div>
             
             <div className="absolute bottom-4 text-[10px] text-slate-600 font-mono text-center">
-                <p className="font-bold text-slate-500 mb-1">Architected by [Your Name]</p>
+                <p className="font-bold text-slate-500 mb-1">Developed by the filthymanc</p>
                 <p className="opacity-75">Not affiliated with Eagle Dynamics or FlightControl</p>
             </div>
         </div>
