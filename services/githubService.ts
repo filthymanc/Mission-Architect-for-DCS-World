@@ -2,7 +2,7 @@
 import { parseLuaSource } from './luaParserService';
 
 // Service to fetch raw Lua source code via GitHub API
-// Implements Phase 8 "Code-First Librarian" & Phase 9 "Semantic Architect"
+// Implements "Code-First Librarian" & "Semantic Architect" protocols (v2.3)
 
 interface GitHubFile {
     path: string;
@@ -160,7 +160,7 @@ export const getFrameworkDocs = async (framework: string, moduleName: string, br
         let content = await response.text();
         const fileSize = content.length;
 
-        // 5. Semantic Compression (Phase 9)
+        // 5. Semantic Compression (Phase 9 -> v2.3 Optimized)
         // If file is > 10KB and is a Lua file, run the compressor.
         // We set a lower threshold than the 150k hard limit because we WANT to save tokens regardless.
         const COMPRESSION_THRESHOLD = 10000; 

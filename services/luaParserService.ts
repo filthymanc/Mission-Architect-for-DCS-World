@@ -1,7 +1,7 @@
 
 /**
  * Lua Parser Service
- * v2.1 Phase 9 - Semantic Compression
+ * Version: v2.3 Public Release
  * 
  * Analyzes raw Lua source code and "compresses" it for AI consumption.
  * - Retains: Documentation (LDoc), Class Definitions, Function Signatures.
