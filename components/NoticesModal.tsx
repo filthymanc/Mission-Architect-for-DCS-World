@@ -70,7 +70,7 @@ const NoticesModal: React.FC<NoticesModalProps> = ({ isOpen, onClose }) => {
                 name="The filthymanc"
                 author="Developer"
                 license="MIT"
-                link="https://github.com/[your-github-profile]"
+                link="https://github.com/filthymanc"
                 desc="Concept, Design, and Full-Stack Implementation."
              />
           </Section>
