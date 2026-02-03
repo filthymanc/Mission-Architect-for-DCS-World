@@ -15,6 +15,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import PrivacyModal from './components/PrivacyModal';
 import OnboardingModal from './components/OnboardingModal';
 import ShortcutsModal from './components/ShortcutsModal';
+import NoticesModal from './components/NoticesModal';
 import Toast from './components/Toast';
 import Dashboard from './components/Dashboard';
 
@@ -50,6 +51,7 @@ const AppContent: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
+  const [isNoticesOpen, setIsNoticesOpen] = useState(false);
   const [isOnboarding, setIsOnboarding] = useState(false);
   const [isConfirmingClear, setIsConfirmingClear] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
@@ -143,6 +145,10 @@ const AppContent: React.FC = () => {
                   setIsPrivacyOpen(false);
                   return;
               }
+              if (isNoticesOpen) {
+                  setIsNoticesOpen(false);
+                  return;
+              }
               // Priority 4: Close Sidebar
               if (isSidebarOpen) {
                   setIsSidebarOpen(false);
@@ -153,7 +159,7 @@ const AppContent: React.FC = () => {
 
       window.addEventListener('keydown', handleGlobalKeyDown);
       return () => window.removeEventListener('keydown', handleGlobalKeyDown);
-  }, [isGenerating, isPrivacyOpen, isShortcutsOpen, isSidebarOpen, sessions, activeSessionId, createSession, stopGeneration, setActiveSessionId]);
+  }, [isGenerating, isPrivacyOpen, isShortcutsOpen, isNoticesOpen, isSidebarOpen, sessions, activeSessionId, createSession, stopGeneration, setActiveSessionId]);
 
 
   const completeOnboarding = () => {
@@ -304,6 +310,7 @@ const AppContent: React.FC = () => {
             <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
             <PrivacyModal isOpen={isPrivacyOpen} onClose={() => setIsPrivacyOpen(false)} />
+            <NoticesModal isOpen={isNoticesOpen} onClose={() => setIsNoticesOpen(false)} />
 
             <div className="max-w-md w-full bg-slate-950/80 backdrop-blur-xl border border-slate-800 rounded-2xl p-8 shadow-2xl relative z-10">
                 
@@ -398,6 +405,13 @@ const AppContent: React.FC = () => {
                     >
                         Read Privacy Policy
                     </button>
+                    <span className="text-slate-700 mx-2">|</span>
+                    <button 
+                        onClick={() => setIsNoticesOpen(true)}
+                        className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
+                    >
+                        Third-Party Licenses
+                    </button>
                 </div>
             </div>
             
@@ -442,11 +456,13 @@ const AppContent: React.FC = () => {
             onImportData={() => fileInputRef.current?.click()}
             onOpenPrivacy={() => setIsPrivacyOpen(true)}
             onOpenShortcuts={() => setIsShortcutsOpen(true)} // Pass Handler
+            onOpenNotices={() => setIsNoticesOpen(true)} // Pass Handler
             isLoading={isGenerating}
         />
 
         <PrivacyModal isOpen={isPrivacyOpen} onClose={() => setIsPrivacyOpen(false)} />
         <ShortcutsModal isOpen={isShortcutsOpen} onClose={() => setIsShortcutsOpen(false)} />
+        <NoticesModal isOpen={isNoticesOpen} onClose={() => setIsNoticesOpen(false)} />
         <OnboardingModal isOpen={isOnboarding} onComplete={completeOnboarding} />
         {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
 
