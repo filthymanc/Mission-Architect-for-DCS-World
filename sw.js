@@ -1,5 +1,5 @@
 
-const CACHE_NAME = 'dcs-architect-v2.3-phase11-release-final-patch2';
+const CACHE_NAME = 'mission-architect-v2.4.5-beta';
 
 // IMPORTANT: These must match the manifest start_url and scope exactly
 // to ensure the PWA matches the cache key when offline.
