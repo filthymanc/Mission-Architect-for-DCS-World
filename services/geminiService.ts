@@ -1,6 +1,23 @@
+/*
+ * DCS Mission Architect
+ * Copyright (C) 2026 the filthymanc
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
 import { GoogleGenAI, Chat, GenerateContentResponse, Content, Type, FunctionDeclaration, Tool } from "@google/genai";
-import { SYSTEM_INSTRUCTION } from '../constants';
+import { SYSTEM_INSTRUCTION, MODELS } from '../constants';
 import { Message, ModelType } from '../types';
 import { getFrameworkDocs } from './githubService';
 import { SSE_DEFINITIONS } from '../data/sse-definitions';
@@ -63,7 +80,7 @@ export const validateApiKey = async (apiKey: string): Promise<boolean> => {
     const ai = new GoogleGenAI({ apiKey });
     try {
         await ai.models.generateContent({
-            model: 'gemini-3-flash-preview',
+            model: MODELS.FLASH.id,
             contents: { parts: [{ text: 'ping' }] },
         });
         return true;
@@ -72,7 +89,7 @@ export const validateApiKey = async (apiKey: string): Promise<boolean> => {
     }
 };
 
-export const startNewSession = (apiKey: string, historyMessages: Message[], model: ModelType = 'gemini-3-flash-preview', isDesanitized: boolean = false): Chat => {
+export const startNewSession = (apiKey: string, historyMessages: Message[], model: ModelType = MODELS.FLASH.id, isDesanitized: boolean = false): Chat => {
     const ai = new GoogleGenAI({ apiKey });
     const formattedHistory = mapMessagesToHistory(historyMessages);
 

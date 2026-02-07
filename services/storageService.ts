@@ -1,17 +1,23 @@
+/*
+ * DCS Mission Architect
+ * Copyright (C) 2026 the filthymanc
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
 import { Session, Message } from '../types';
-import { STORAGE_VERSION_TAG } from '../version';
-
-// Storage Keys
-const KEYS = {
-  INDEX: `dcs-architect-${STORAGE_VERSION_TAG}-index`,         // Stores Session[] (Lightweight)
-  SESSION_PREFIX: 'dcs-mission-',            // Prefix for individual message history
-  
-  // Legacy Keys
-  V1_7_INDEX: 'dcs-architect-v1.7-index',  // v1.7
-  LEGACY_SESSIONS: 'dcs-architect-sessions-v1', // v1.6
-  LEGACY_MESSAGES: 'dcs-architect-messages-v1'
-};
+import { STORAGE_KEYS } from '../constants';
 
 /**
  * Loads the Session Index.
@@ -19,7 +25,7 @@ const KEYS = {
  */
 export const loadSessionIndex = (): Session[] => {
   try {
-    const raw = localStorage.getItem(KEYS.INDEX);
+    const raw = localStorage.getItem(STORAGE_KEYS.INDEX);
     
     // CASE 1: Data exists in new format (Current Version)
     if (raw) {
@@ -34,7 +40,7 @@ export const loadSessionIndex = (): Session[] => {
     }
 
     // CASE 2: Check for v1.7 Data (Migration)
-    const v17Raw = localStorage.getItem(KEYS.V1_7_INDEX);
+    const v17Raw = localStorage.getItem(STORAGE_KEYS.V1_7_INDEX);
     if (v17Raw) {
          console.log("[Storage] Migrating index from v1.7 to Current Version...");
          try {
@@ -53,7 +59,7 @@ export const loadSessionIndex = (): Session[] => {
     }
 
     // CASE 3: No new data, check for Legacy Data (v1.6 Migration)
-    const legacySessionsRaw = localStorage.getItem(KEYS.LEGACY_SESSIONS);
+    const legacySessionsRaw = localStorage.getItem(STORAGE_KEYS.LEGACY_SESSIONS);
     if (legacySessionsRaw) {
         console.log("[Storage] Migrating data from v1.6 to Current Version...");
         return migrateLegacyData(legacySessionsRaw);
@@ -79,7 +85,7 @@ const migrateLegacyData = (rawSessions: string): Session[] => {
         }));
 
         // 2. Parse Messages (The Monolith)
-        const rawMessages = localStorage.getItem(KEYS.LEGACY_MESSAGES);
+        const rawMessages = localStorage.getItem(STORAGE_KEYS.LEGACY_MESSAGES);
         if (rawMessages) {
             const allMessages = JSON.parse(rawMessages);
             
@@ -108,7 +114,7 @@ const migrateLegacyData = (rawSessions: string): Session[] => {
  */
 export const saveSessionIndex = (sessions: Session[]) => {
   try {
-    localStorage.setItem(KEYS.INDEX, JSON.stringify(sessions));
+    localStorage.setItem(STORAGE_KEYS.INDEX, JSON.stringify(sessions));
   } catch (e) {
     console.error("Storage Error: Failed to save session index", e);
   }
@@ -119,7 +125,7 @@ export const saveSessionIndex = (sessions: Session[]) => {
  */
 export const loadSessionMessages = (sessionId: string): Message[] => {
   try {
-    const key = `${KEYS.SESSION_PREFIX}${sessionId}`;
+    const key = `${STORAGE_KEYS.SESSION_PREFIX}${sessionId}`;
     const raw = localStorage.getItem(key);
     if (!raw) return [];
 
@@ -143,7 +149,7 @@ export const loadSessionMessages = (sessionId: string): Message[] => {
  */
 export const saveSessionMessages = (sessionId: string, messages: Message[]) => {
   try {
-    const key = `${KEYS.SESSION_PREFIX}${sessionId}`;
+    const key = `${STORAGE_KEYS.SESSION_PREFIX}${sessionId}`;
     localStorage.setItem(key, JSON.stringify(messages));
   } catch (e) {
     console.error(`Storage Error: Failed to save messages for session ${sessionId}`, e);
@@ -155,7 +161,7 @@ export const saveSessionMessages = (sessionId: string, messages: Message[]) => {
  */
 export const deleteSessionData = (sessionId: string) => {
   try {
-    const key = `${KEYS.SESSION_PREFIX}${sessionId}`;
+    const key = `${STORAGE_KEYS.SESSION_PREFIX}${sessionId}`;
     localStorage.removeItem(key);
   } catch (e) {
     console.error(`Storage Error: Failed to delete session data ${sessionId}`, e);
@@ -169,17 +175,20 @@ export const deleteSessionData = (sessionId: string) => {
 export const clearAllData = () => {
     try {
         const keysToRemove = [
-            KEYS.INDEX, KEYS.V1_7_INDEX, KEYS.LEGACY_SESSIONS, KEYS.LEGACY_MESSAGES,
-            'dcs-architect-api-key',
-            'dcs-architect-settings-v2',
-            'dcs-architect-onboarded'
+            STORAGE_KEYS.INDEX, 
+            STORAGE_KEYS.V1_7_INDEX, 
+            STORAGE_KEYS.LEGACY_SESSIONS, 
+            STORAGE_KEYS.LEGACY_MESSAGES,
+            STORAGE_KEYS.API_KEY,
+            STORAGE_KEYS.SETTINGS,
+            STORAGE_KEYS.ONBOARDED
         ];
         
         keysToRemove.forEach(k => localStorage.removeItem(k));
         
         // Pattern Matching Removals for Sessions and Caches
         Object.keys(localStorage).forEach(key => {
-            if (key.startsWith(KEYS.SESSION_PREFIX) || key.startsWith('dcs-architect-tree-')) {
+            if (key.startsWith(STORAGE_KEYS.SESSION_PREFIX) || key.startsWith(STORAGE_KEYS.TREE_CACHE_PREFIX)) {
                 localStorage.removeItem(key);
             }
         });
