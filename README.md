@@ -1,10 +1,10 @@
 
 # Mission Architect for DCS
 
-![Version](https://img.shields.io/badge/version-2.3-blue)
+![Version](https://img.shields.io/badge/version-2.4.5b-blue)
 ![Status](https://img.shields.io/badge/status-Live-emerald)
 ![Tech](https://img.shields.io/badge/Powered_by-Gemini_3.0-orange)
-![License](https://img.shields.io/badge/license-MIT-purple)
+![License](https://img.shields.io/badge/license-GPLv3-blue)
 
 **[🔴 LAUNCH LIVE APP](https://filthymanc.github.io/Mission-Architect-for-DCS-World/)**
 
@@ -56,4 +56,7 @@ The AI is governed by strict protocols to ensure code safety:
 This tool is a community project and is not affiliated with Eagle Dynamics, FlightControl (MOOSE), or cfrag (DML).
 
 ## License
-MIT License. Free to use and modify for the DCS Community.
+**Mission Architect for DCS** is open-source software licensed under the **GNU General Public License v3.0**.
+
+You are free to use, modify, and distribute this software, but any modifications you distribute must also be open-source under the same license.
+See the [LICENSE](LICENSE) file for details.

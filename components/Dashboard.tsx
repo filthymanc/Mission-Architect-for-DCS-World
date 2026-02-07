@@ -1,3 +1,21 @@
+/*
+ * DCS Mission Architect
+ * Copyright (C) 2026 the filthymanc
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import React from 'react';
 import { AppSettings, ApiStatus, Session } from '../types';
 import { SUGGESTED_QUERIES } from '../constants';
@@ -38,20 +56,32 @@ const Dashboard: React.FC<DashboardProps> = ({
     }).format(new Date(date));
   };
 
+  const getStatusColor = () => {
+    if (apiStatus === 'error') return 'bg-red-900/20 text-red-500';
+    if (apiStatus === 'offline') return 'bg-slate-800 text-slate-500';
+    return 'bg-emerald-900/20 text-emerald-500';
+  };
+
+  const getStatusTextColor = () => {
+    if (apiStatus === 'error') return 'text-red-400';
+    if (apiStatus === 'offline') return 'text-slate-500';
+    return 'text-emerald-400';
+  };
+
   return (
     <div className="flex flex-col gap-6 max-w-4xl mx-auto py-8 animate-fadeIn select-none">
       {/* 1. SYSTEM STATUS PANEL */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4" role="region" aria-label="System Status">
         {/* API Status */}
         <div className="bg-slate-950 border border-slate-800 p-4 rounded-xl flex items-center gap-4 shadow-sm">
-          <div className={`p-3 rounded-lg ${apiStatus === 'error' ? 'bg-red-900/20 text-red-500' : 'bg-emerald-900/20 text-emerald-500'}`}>
+          <div className={`p-3 rounded-lg ${getStatusColor()}`}>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
             </svg>
           </div>
           <div>
             <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Connection</h3>
-            <p className={`font-mono font-bold text-sm ${apiStatus === 'error' ? 'text-red-400' : 'text-emerald-400'}`}>
+            <p className={`font-mono font-bold text-sm ${getStatusTextColor()}`}>
               {apiStatus === 'idle' ? 'ONLINE' : apiStatus.toUpperCase()}
             </p>
           </div>

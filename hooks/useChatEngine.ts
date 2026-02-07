@@ -1,3 +1,20 @@
+/*
+ * DCS Mission Architect
+ * Copyright (C) 2026 the filthymanc
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
 import { useState, useRef, useEffect } from 'react';
 import { Chat, GenerateContentResponse } from "@google/genai";
@@ -57,6 +74,21 @@ export const useChatEngine = ({
   const sendMessage = async (text: string) => {
     if (!text.trim() || isLoading || !apiKey) return;
 
+    // PRE-FLIGHT CHECK: Network
+    if (!navigator.onLine) {
+        const offlineMsg: Message = { 
+            id: Date.now().toString(), 
+            role: 'model', 
+            text: "**OFFLINE MODE:**\n\nI cannot contact the neural engine because your device is offline. Please check your internet connection.", 
+            timestamp: new Date(),
+            isStreaming: false
+        };
+        // Add user message then offline system message
+        const userMsg: Message = { id: (Date.now()-1).toString(), role: 'user', text, timestamp: new Date() };
+        setMessages([...messages, userMsg, offlineMsg]);
+        return;
+    }
+
     const userMessage: Message = { id: Date.now().toString(), role: 'user', text, timestamp: new Date() };
     const modelMessageId = (Date.now() + 1).toString();
     const modelMessage: Message = {
@@ -94,7 +126,6 @@ export const useChatEngine = ({
             const contentResponse = chunk as GenerateContentResponse;
             
             // CRITICAL FIX: Manually extract text to avoid SDK warning about "non-text parts functionCall"
-            // The SDK's .text getter warns if it encounters a functionCall part.
             const parts = contentResponse.candidates?.[0]?.content?.parts || [];
             const textContent = parts
                 .filter(p => p.text)
@@ -104,13 +135,11 @@ export const useChatEngine = ({
             fullText += textContent;
 
             // Extract Librarian Call Progress
-            // We look for functionCalls to update UI status
             const call = parts.find(p => p.functionCall);
             if (call?.functionCall) {
                 const module = call.functionCall.args['module_name'] || 'Documentation';
                 currentLibrarianStatus = `Librarian: Fetching ${module}...`;
             } else if (textContent && textContent.length > 5) {
-                // If we are getting substantial text, clear the status
                 currentLibrarianStatus = ''; 
             }
 
@@ -124,7 +153,6 @@ export const useChatEngine = ({
                 };
             }
 
-            // Sources Extraction
             const sourcesMap = new Map<string, string>();
             contentResponse.candidates?.[0]?.groundingMetadata?.groundingChunks?.forEach((c: any) => {
                 if (c.web) sourcesMap.set(c.web.uri, c.web.title);
@@ -138,7 +166,7 @@ export const useChatEngine = ({
                     sources: sources.length > 0 ? sources : undefined,
                     verifiedModel,
                     tokenUsage,
-                    librarianStatus: currentLibrarianStatus || undefined, // Update status
+                    librarianStatus: currentLibrarianStatus || undefined, 
                     timingMs: Date.now() - startTime
                 } : msg
             ));
@@ -149,7 +177,7 @@ export const useChatEngine = ({
                 ...msg,
                 text: fullText,
                 isStreaming: false,
-                librarianStatus: undefined, // Clear status on finish
+                librarianStatus: undefined, 
                 timingMs: Date.now() - startTime
             } : msg
         ));
@@ -157,10 +185,22 @@ export const useChatEngine = ({
 
     } catch (error: any) {
         console.error(error);
+        
+        // SANITIZE ERROR MESSAGE
+        let cleanError = "An unexpected system error occurred.";
+        
+        if (error.toString().includes('Failed to fetch') || error.toString().includes('NetworkError')) {
+             cleanError = "**NETWORK ERROR**\n\nConnection lost during transmission. Please check your internet.";
+             setApiStatus('offline');
+        } else {
+             cleanError = "**SYSTEM ERROR**\n\n" + (error.message || error.toString());
+             setApiStatus('error');
+        }
+
         setMessages(newHistory.map(msg => 
-            msg.id === modelMessageId ? { ...msg, text: fullText || "Connection interrupted. The AI Model may be overloaded or the API key is invalid.", isStreaming: false } : msg
+            msg.id === modelMessageId ? { ...msg, text: fullText || cleanError, isStreaming: false } : msg
         ));
-        setApiStatus('error');
+        
     } finally {
         setIsLoading(false);
         abortControllerRef.current = null;

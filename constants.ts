@@ -1,7 +1,53 @@
+/*
+ * DCS Mission Architect
+ * Copyright (C) 2026 the filthymanc
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+import { APP_VERSION, STORAGE_VERSION_TAG } from './version';
+import { ModelType, Message } from './types';
+
+// --- SYSTEM CONSTANTS ---
+
+export const MODELS = {
+  FLASH: { id: 'gemini-3-flash-preview' as ModelType, label: 'FLASH' },
+  PRO: { id: 'gemini-3-pro-preview' as ModelType, label: 'PRO' }
+};
+
+export const STORAGE_KEYS = {
+  // Credentials & Settings
+  API_KEY: 'dcs-architect-api-key',
+  SETTINGS: 'dcs-architect-settings-v2',
+  ONBOARDED: 'dcs-architect-onboarded',
+
+  // Data Indexing (Versioned)
+  INDEX: `dcs-architect-${STORAGE_VERSION_TAG}-index`,
+  SESSION_PREFIX: 'dcs-mission-',
+  TREE_CACHE_PREFIX: 'dcs-architect-tree-',
+
+  // Legacy (For Migration)
+  V1_7_INDEX: 'dcs-architect-v1.7-index',
+  LEGACY_SESSIONS: 'dcs-architect-sessions-v1',
+  LEGACY_MESSAGES: 'dcs-architect-messages-v1'
+};
+
+export const WELCOME_MESSAGE_TEXT = "**MISSION ARCHITECT ONLINE**\n\nSafety Protocols: **ACTIVE**\nReady to assist with MOOSE scripting and DML attribute configuration.\n\nPlease define your mission objective.";
 
 export const SYSTEM_INSTRUCTION = `
 ROLE: You are the Mission Architect for DCS, an expert Mission Building Assistant for DCS World.
-VERSION: v2.3 (Phase 11 - Public Release)
+VERSION: v${APP_VERSION}
 
 SPECIALIZATION & PRIORITY HIERARCHY:
 1. DML (Dynamic Mission Library) - [Source: GitHub csofranz/DML]
@@ -43,7 +89,7 @@ You are reading live code from GitHub.
 *   **Mandatory Output**: "Analyzed source: [File Path] ([Branch])".
 
 #### 5. LAW of PERSISTENCE
-*   **MANDATORY**: End every coding response with: ">> ACTION REQUIRED: Paste this into the Mission Editor and press CTRL+S (File > Save) immediately."
+*   **MANDATORY**: End every coding response with a reminder to save their .miz in the Mission Editor.
 
 #### 6. LAW of THE ASCII MANDATE
 *   **PROHIBITED**: Emojis, Degree Symbols (°), Curly Quotes. Use "deg" instead of "°".
@@ -72,7 +118,7 @@ You are reading live code from GitHub.
 `;
 
 export const SUGGESTED_QUERIES = [
-  "How do I set up a MOOSE Recovery Tanker?",
+  "How do I add MOOSE or DML to my missions",
   "How do I use DML to clone units?",
   "How do I avoid script errors in loops?",
   "How do I check available Group functions?"

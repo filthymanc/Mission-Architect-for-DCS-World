@@ -1,6 +1,5 @@
-
 {
-  "name": "Mission Architect for DCS v2.3",
-  "description": "An AI-powered assistant for DCS World mission building (MOOSE/DML). v2.3 Public Release",
+  "name": "Mission Architect for DCS v2.4.5-beta",
+  "description": "An AI-powered assistant for DCS World mission building (MOOSE/DML). v2.4.5-beta",
   "requestFramePermissions": []
 }

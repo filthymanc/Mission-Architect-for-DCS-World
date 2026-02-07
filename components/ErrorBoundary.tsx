@@ -1,5 +1,24 @@
+/*
+ * DCS Mission Architect
+ * Copyright (C) 2026 the filthymanc
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import React, { ErrorInfo, ReactNode } from "react";
-import { STORAGE_VERSION_TAG } from "../version";
+import { STORAGE_KEYS } from "../constants";
+import { AlertIcon } from "./Icons";
 
 interface Props {
   children?: ReactNode;
@@ -41,18 +60,21 @@ class ErrorBoundary extends React.Component<Props, State> {
   executeHardReset = () => {
      try {
          console.log("Executing Factory Reset...");
-         // Nuclear option: Clear ALL storage keys used by the app
-         localStorage.removeItem('dcs-architect-sessions-v1');
-         localStorage.removeItem('dcs-architect-messages-v1');
-         localStorage.removeItem('dcs-architect-api-key');      // Clear Credentials
-         localStorage.removeItem('dcs-architect-settings-v2');   // Clear Preferences
-         // Clear index keys
-         localStorage.removeItem('dcs-architect-v1.7-index');
-         localStorage.removeItem(`dcs-architect-${STORAGE_VERSION_TAG}-index`);
+         const keysToRemove = [
+            STORAGE_KEYS.INDEX, 
+            STORAGE_KEYS.V1_7_INDEX, 
+            STORAGE_KEYS.LEGACY_SESSIONS, 
+            STORAGE_KEYS.LEGACY_MESSAGES,
+            STORAGE_KEYS.API_KEY,
+            STORAGE_KEYS.SETTINGS,
+            STORAGE_KEYS.ONBOARDED
+        ];
+        
+        keysToRemove.forEach(k => localStorage.removeItem(k));
          
-         // Clear Phase 8 GitHub Tree Caches
+         // Clear Phase 8 GitHub Tree Caches and Sessions by prefix
          Object.keys(localStorage).forEach(key => {
-             if (key.startsWith('dcs-architect-tree-')) {
+             if (key.startsWith(STORAGE_KEYS.TREE_CACHE_PREFIX) || key.startsWith(STORAGE_KEYS.SESSION_PREFIX)) {
                  localStorage.removeItem(key);
              }
          });
@@ -76,9 +98,7 @@ class ErrorBoundary extends React.Component<Props, State> {
            return (
             <div className="p-3 bg-red-900/10 border border-red-500/20 rounded text-sm text-red-300 font-mono">
                 <div className="flex items-center gap-2 mb-1 font-bold text-xs uppercase tracking-wider opacity-70">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                    </svg>
+                    <AlertIcon className="h-4 w-4" />
                     Rendering Error
                 </div>
                 <p className="opacity-80">This message contains content that could not be displayed.</p>
@@ -100,9 +120,7 @@ class ErrorBoundary extends React.Component<Props, State> {
         <div className="flex flex-col items-center justify-center h-full min-h-[400px] p-6 text-center bg-slate-900 text-slate-200">
           <div className="max-w-md w-full bg-slate-950 border border-slate-800 p-8 rounded-2xl shadow-2xl">
             <div className="w-16 h-16 bg-red-900/20 rounded-full flex items-center justify-center mx-auto mb-6 text-red-500">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
+                <AlertIcon className="h-8 w-8" />
             </div>
             <h2 className="text-xl font-bold text-white mb-2">Critical System Error</h2>
             <p className="text-slate-400 mb-6 text-sm">
