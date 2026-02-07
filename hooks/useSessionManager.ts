@@ -70,7 +70,19 @@ export const useSessionManager = () => {
 
   const createSession = useCallback((nameOverride?: string): string => {
     const id = Date.now().toString() + Math.random().toString().slice(2, 6);
-    const name = nameOverride || `Mission ${sessions.length + 1}`;
+    
+    let name = nameOverride;
+    if (!name) {
+       // Strategy: Natural Sequence Scanning
+       // Finds the highest "Mission X" number and adds 1.
+       const existingNumbers = sessions.map(s => {
+           const match = s.name.match(/^Mission\s+(\d+)$/);
+           return match ? parseInt(match[1], 10) : 0;
+       });
+       
+       const maxNum = existingNumbers.reduce((max, current) => (current > max ? current : max), 0);
+       name = `Mission ${maxNum + 1}`;
+    }
     
     const newSession: Session = {
       id,
