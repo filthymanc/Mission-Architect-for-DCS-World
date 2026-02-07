@@ -26,7 +26,7 @@ interface SidebarProps {
   sessions: Session[];
   activeSessionId: string | null;
   onSelectSession: (id: string) => void;
-  onCreateSession: () => void;
+  onCreateSession: () => string;
   onDeleteSession: (id: string) => void;
   onRenameSession: (id: string, newName: string) => void;
   isOpen: boolean;
@@ -110,7 +110,13 @@ const Sidebar: React.FC<SidebarProps> = ({
         {/* New Mission Button */}
         <div className="p-4">
             <button
-                onClick={() => { if(!isLoading) { onCreateSession(); onClose(); } }}
+                onClick={() => { 
+                    if(!isLoading) { 
+                        const newId = onCreateSession(); 
+                        setEditingId(newId);
+                        // We do NOT call onClose() here, so the user can see the edit input immediately
+                    } 
+                }}
                 disabled={isLoading}
                 className={`
                     w-full flex items-center justify-center gap-2 
