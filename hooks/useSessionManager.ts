@@ -1,6 +1,25 @@
+/*
+ * DCS Mission Architect
+ * Copyright (C) 2026 the filthymanc
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import { useState, useEffect, useCallback } from 'react';
 import { Session, Message } from '../types';
 import * as storage from '../services/storageService';
+import { WELCOME_MESSAGE_TEXT } from '../constants';
 
 export const useSessionManager = () => {
   const [sessions, setSessions] = useState<Session[]>([]);
@@ -28,7 +47,7 @@ export const useSessionManager = () => {
         const welcomeMsg: Message = {
             id: 'init-' + defaultId,
             role: 'model',
-            text: "**DCS MISSION ARCHITECT ONLINE**\n\nSafety Protocols: **ACTIVE**\nReady to assist with MOOSE scripting and DML attribute configuration.\n\nPlease define your mission objective.",
+            text: WELCOME_MESSAGE_TEXT,
             timestamp: new Date(),
             isStreaming: false
         };
@@ -67,7 +86,7 @@ export const useSessionManager = () => {
     const welcomeMsg: Message = {
       id: 'init-' + id,
       role: 'model',
-      text: "**DCS MISSION ARCHITECT ONLINE**\n\nSafety Protocols: **ACTIVE**\nReady to assist with MOOSE scripting and DML attribute configuration.\n\nPlease define your mission objective.",
+      text: WELCOME_MESSAGE_TEXT,
       timestamp: new Date(),
       isStreaming: false
     };
