@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Base: Slate (Standard Mode) */
+    --bg-canvas: 15 23 42;
+    --bg-frame: 2 6 23;
+    --bg-surface: 30 41 59;
+    --bg-overlay: 2 6 23;
+    
+    --text-primary: 226 232 240;
+    --text-secondary: 148 163 184;
+    --text-tertiary: 100 116 139;
+
+    --border-base: 30 41 59;
+    --border-highlight: 51 65 85;
+
+    /* Default Accent: Emerald */
+    --color-brand: 16 185 129;
+    --color-brand-dim: 6 95 70;
+  }
+}

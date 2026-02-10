@@ -1,0 +1,38 @@
+{
+  "name": "mission-architect",
+  "private": true,
+  "_versioning_checklist": [
+    "1. UPDATE 'version' below (Source of Truth)",
+    "2. UPDATE 'public/sw.js' CACHE_NAME (Critical for PWA updates)",
+    "3. UPDATE 'public/sw.js' REPO_PATH (If repo name changes)",
+    "4. UPDATE 'vite.config.ts' base (If repo name changes)",
+    "5. UPDATE 'manifest.json' start_url/scope (If repo name changes)",
+    "6. UPDATE 'metadata.json' (Cosmetic)",
+    "7. UPDATE 'README.md' Badges (Documentation)"
+  ],
+  "version": "2.4.6-beta",
+  "license": "GPL-3.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@google/genai": "latest",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-markdown": "^9.0.1",
+    "remark-gfm": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0"
+  }
+}
