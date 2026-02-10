@@ -1,9 +1,8 @@
-
 # Mission Architect for DCS
 
-![Version](https://img.shields.io/badge/version-2.4.6b-blue)
+![Version](https://img.shields.io/badge/version-2.4.6--beta-blue)
 ![Status](https://img.shields.io/badge/status-Live-emerald)
-![Tech](https://img.shields.io/badge/Powered_by-Gemini_3.0-orange)
+![Tech](https://img.shields.io/badge/Powered_by-Gemini_Pro-orange)
 ![License](https://img.shields.io/badge/license-GPLv3-blue)
 
 **[🔴 LAUNCH LIVE APP](https://filthymanc.github.io/Mission-Architect-for-DCS-World/)**
@@ -12,39 +11,63 @@ The **Mission Architect** is an AI-powered Progressive Web App (PWA) designed to
 
 ## 🚀 Key Features
 
-*   **The Semantic Architect (v2.1+)**: Analyze massive Lua files (like `Airboss.lua`) directly from GitHub without hitting token limits.
-*   **The Librarian**: A built-in tool that searches the official MOOSE and DML repositories in real-time.
-*   **Safety First**:
-    *   **Hard Deck Protocols**: Prevents the AI from hallucinating functions that don't exist.
-    *   **Sanitized Mode**: By default, the AI will not generate code that requires desanitizing your DCS install.
-*   **Local & Private**: All your API keys and data are stored **locally** in your browser.
-*   **Offline Capable (v2.2+)**: Installable as a native app on Windows, Android, and iOS via PWA technology.
+- **The Semantic Architect**: Analyze massive Lua files directly from GitHub without hitting token limits.
+- **The Librarian**: A built-in tool that searches the official MOOSE and DML repositories in real-time.
+- **Safety First**:
+  - **Hard Deck Protocols**: Prevents the AI from hallucinating functions that don't exist.
+  - **Sanitized Mode**: By default, the AI will not generate code that requires desanitizing your DCS install.
+- **Local & Private**: All your API keys and data are stored **locally** in your browser.
+- **Offline Capable**: Installable as a native app on Windows, Android, and iOS via PWA technology.
 
-## 💻 How to Run
+## 💻 Developer Setup
 
-### Option A: Use the Public Web App
-Simply visit the [GitHub Pages Deployment](https://filthymanc.github.io/Mission-Architect-for-DCS-World/).
-*   **Android/iOS**: Tap "Share" -> "Add to Home Screen" to install it as a full-screen app.
-*   **PC**: Click the "Install" icon in the Chrome/Edge address bar.
+This project uses a standard **Vite + React + TypeScript** architecture.
 
-### Option B: Developer Setup (Run Locally)
-This project uses **Vite** for building. You need [Node.js](https://nodejs.org/) installed.
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [Git](https://git-scm.com/)
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/filthymanc/Mission-Architect-for-DCS-World.git
+
+# Navigate to the folder
+cd Mission-Architect-for-DCS-World
+
 # Install dependencies
 npm install
+```
 
-# Start development server
+### Running Locally
+
+```bash
+# Start the development server
 npm run dev
 ```
-Open `http://localhost:5173` in your browser.
+
+The app will launch at `http://localhost:3000` (or similar).
+
+### Building for Production
+
+```bash
+# Create a production build
+npm run build
+```
+
+The output will be in the `dist/` folder.
 
 ## 🔑 Setup
+
 1.  Get a **Google Gemini API Key** from [Google AI Studio](https://aistudio.google.com/app/apikey).
 2.  Paste the key when prompted on the launch screen.
 
 ## ⚖️ The 6 Immutable Laws
+
 The AI is governed by strict protocols to ensure code safety:
+
 1.  **Law of Environment**: Assume a "Sanitized" DCS environment by default.
 2.  **Law of Verification**: Verify method existence via the Librarian.
 3.  **Law of Discovery**: Use dynamic tree search to find modules.
@@ -53,10 +76,9 @@ The AI is governed by strict protocols to ensure code safety:
 6.  **Law of The ASCII Mandate**: Avoid UTF-8 symbols that break DCS serialization.
 
 ## ⚠️ Disclaimer
+
 This tool is a community project and is not affiliated with Eagle Dynamics, FlightControl (MOOSE), or cfrag (DML).
 
 ## License
-**Mission Architect for DCS** is open-source software licensed under the **GNU General Public License v3.0**.
 
-You are free to use, modify, and distribute this software, but any modifications you distribute must also be open-source under the same license.
-See the [LICENSE](LICENSE) file for details.
+**Mission Architect for DCS** is open-source software licensed under the **GNU General Public License v3.0**.
