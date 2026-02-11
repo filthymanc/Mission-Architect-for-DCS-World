@@ -1,11 +1,12 @@
 {
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "YoavBls.pretty-ts-errors",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
   "files.associations": {
-    "*.css": "tailwindcss"
+    "*.css": "tailwindcss",
+    "*.lua": "lua"
   },
   "tailwindCSS.includeLanguages": {
     "typescript": "javascript",
@@ -22,5 +23,8 @@
     "**/node_modules": true,
     "**/dist": true,
     "**/build": true
-  }
+  },
+  // OPTIMIZATION: Prevents VS Code from fighting Gemini for imports
+  "typescript.suggest.autoImports": false,
+  "javascript.suggest.autoImports": false
 }
