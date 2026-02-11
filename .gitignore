@@ -22,14 +22,6 @@ Thumbs.db
 .env.test.local
 .env.production.local
 
-# AI System Instructions
-GEMINI.md
-
 # IDEs
-.vscode/
-.idea/
 
-# Dev notes
-DEVELOPMENT_PLAN.md
-Critical.md
-THEME_AUDIT.md
+.idea/

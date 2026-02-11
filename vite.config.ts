@@ -1,15 +1,35 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { readFileSync } from "fs";
+
+const packageJson = JSON.parse(readFileSync("./package.json", "utf-8"));
 
 export default defineConfig({
   plugins: [react()],
-  base: './', // Critical for GitHub Pages
+  define: {
+    __APP_VERSION__: JSON.stringify(packageJson.version),
+  },
+  base: "./", // Critical for GitHub Pages
   server: {
     port: 3000,
-    open: true // Opens browser automatically
+    open: true, // Opens browser automatically
   },
   build: {
-    outDir: 'dist',
-    emptyOutDir: true
-  }
+    outDir: "dist",
+    emptyOutDir: true,
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (id.includes("@google/genai")) {
+              return "vendor-genai";
+            }
+            // Merge all other dependencies to avoid circular references
+            return "vendor-libs";
+          }
+        },
+      },
+    },
+  },
 });
