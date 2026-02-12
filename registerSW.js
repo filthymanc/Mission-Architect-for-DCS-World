@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/Mission-Architect-for-DCS-World/sw.js', { scope: '/Mission-Architect-for-DCS-World/' })})}

@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+
+# Production
+build/
+dist/
+
+# System Files
+.DS_Store
+Thumbs.db
+*.log
+
+# Environment Variables (Safety Check)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# AI System Instructions
+GEMINI.md
+
+# IDEs
+.vscode/
+.idea/
+
+# Dev notes
+DEVELOPMENT_PLAN.md
+Critical.md
+THEME_AUDIT.md
