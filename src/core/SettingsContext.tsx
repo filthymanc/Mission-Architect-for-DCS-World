@@ -29,11 +29,17 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [settings, setSettings] = useState<AppSettings>(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.SETTINGS);
+    let initialSettings: AppSettings = {
+      model: MODELS.FLASH.id,
+      isDesanitized: false,
+      themeMode: "standard",
+      themeAccent: "emerald",
+    };
+
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        // Ensure new theme fields exist when migrating from older versions
-        return {
+        initialSettings = {
           model: parsed.model || MODELS.FLASH.id,
           isDesanitized: parsed.isDesanitized || false,
           themeMode: parsed.themeMode || "standard",
@@ -43,18 +49,25 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
         console.error("Failed to parse settings", e);
       }
     }
-    return {
-      model: MODELS.FLASH.id,
-      isDesanitized: false,
-      themeMode: "standard",
-      themeAccent: "emerald",
-    };
+
+    // DIRECT DOM MANIPULATION: Apply theme immediately on hydration
+    // This bypasses the useEffect cycle for the first render
+    if (typeof document !== "undefined" && document.body) {
+      document.body.className = `mode-${initialSettings.themeMode} accent-${initialSettings.themeAccent}`;
+    }
+
+    return initialSettings;
   });
 
   const [apiStatus, setApiStatus] = useState<ApiStatus>("idle");
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
+    // Apply theme classes on update
+    if (typeof document !== "undefined" && document.body) {
+      console.log(`[Theme System] Applying: mode-${settings.themeMode} accent-${settings.themeAccent}`);
+      document.body.className = `mode-${settings.themeMode} accent-${settings.themeAccent}`;
+    }
   }, [settings]);
 
   return (
@@ -62,7 +75,10 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         settings,
         apiStatus,
-        updateSettings: (u) => setSettings((prev) => ({ ...prev, ...u })),
+        updateSettings: (u) => {
+            console.log("[Settings] Updating:", u);
+            setSettings((prev) => ({ ...prev, ...u }));
+        },
         setApiStatus,
       }}
     >

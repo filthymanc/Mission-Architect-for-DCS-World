@@ -19,11 +19,27 @@ import {
   Tool,
   HarmCategory,
   HarmBlockThreshold,
+  Part,
+  FunctionCall,
 } from "@google/genai";
 import { SYSTEM_INSTRUCTION, MODELS } from "../../core/constants";
 import { Message, ModelType } from "../../core/types";
 import { getFrameworkDocs } from "./githubService";
 import { SSE_DEFINITIONS } from "../../data/sse-definitions";
+
+// --- Type Definitions for Tool Arguments ---
+
+interface FrameworkDocsArgs {
+  framework: "MOOSE" | "DML";
+  module_name: string;
+  branch?: "STABLE" | "DEVELOP";
+}
+
+interface SseDocsArgs {
+  category: string;
+}
+
+// -------------------------------------------
 
 const mapMessagesToHistory = (messages: Message[]): Content[] => {
   return messages
@@ -149,12 +165,11 @@ ${envStatus}`;
  */
 export async function* sendMessageStream(
   chatSession: Chat | null,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  message: any,
+  message: string | Part[],
 ): AsyncGenerator<GenerateContentResponse, void, unknown> {
   if (!chatSession) throw new Error("CHAT_NOT_INITIALIZED");
 
-  let currentTurnMessage = message;
+  let currentTurnMessage: string | Part[] = message;
   let turnCount = 0;
   const maxTurns = 5;
 
@@ -163,12 +178,7 @@ export async function* sendMessageStream(
   while (turnCount < maxTurns) {
     turnCount++;
 
-    let inputPayload;
-    if (typeof currentTurnMessage === "string") {
-      inputPayload = { message: currentTurnMessage };
-    } else {
-      inputPayload = { message: currentTurnMessage };
-    }
+    const inputPayload = { message: currentTurnMessage };
 
     let stream;
     try {
@@ -205,7 +215,7 @@ export async function* sendMessageStream(
         `**Details:** ${detailedError}\n` +
         `**Hint:** ${errorHint || "Check your API connection."}`;
 
-      yield {
+      const errorResponse: GenerateContentResponse = {
         candidates: [
           {
             content: {
@@ -215,22 +225,27 @@ export async function* sendMessageStream(
           },
         ],
         text: errorMessage,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any;
+        data: undefined,
+        functionCalls: undefined,
+        executableCode: undefined,
+        codeExecutionResult: undefined,
+      } as unknown as GenerateContentResponse;
+
+      yield errorResponse;
 
       return;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let toolCalls: any[] = [];
+    let toolCalls: FunctionCall[] = [];
 
     for await (const chunk of stream) {
       yield chunk;
-      const calls = chunk.candidates?.[0]?.content?.parts?.filter(
-        (p) => p.functionCall,
-      );
+      const calls = chunk.candidates?.[0]?.content?.parts
+        ?.filter((p) => p.functionCall)
+        .map((p) => p.functionCall as FunctionCall);
+
       if (calls && calls.length > 0) {
-        toolCalls = calls.map((p) => p.functionCall);
+        toolCalls = calls;
       }
     }
 
@@ -239,14 +254,16 @@ export async function* sendMessageStream(
         `[Librarian] executing ${toolCalls.length} tools. Turn: ${turnCount}`,
       );
 
-      const functionResponses = [];
+      const functionResponses: Part[] = [];
       for (const call of toolCalls) {
         let result = "";
 
         // HANDLER: GitHub Docs
         if (call.name === "get_framework_docs") {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const { framework, module_name, branch } = call.args as any;
+          // Validating args with manual casting to interface (safe due to API contract)
+          const args = call.args as unknown as FrameworkDocsArgs;
+          const { framework, module_name, branch } = args;
+
           const fingerprint =
             `${framework}:${module_name}:${branch || ""}`.toUpperCase();
 
@@ -263,8 +280,8 @@ export async function* sendMessageStream(
         }
         // HANDLER: SSE Hard Deck
         else if (call.name === "get_sse_docs") {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const { category } = call.args as any;
+          const args = call.args as unknown as SseDocsArgs;
+          const { category } = args;
           const fingerprint = `SSE:${category}`;
 
           if (toolCallHistory.has(fingerprint)) {
@@ -274,8 +291,8 @@ export async function* sendMessageStream(
             toolCallHistory.add(fingerprint);
             if (category === "All") {
               result = JSON.stringify(SSE_DEFINITIONS, null, 2);
-            } else if (SSE_DEFINITIONS[category]) {
-              result = JSON.stringify(SSE_DEFINITIONS[category], null, 2);
+            } else if (SSE_DEFINITIONS[category as keyof typeof SSE_DEFINITIONS]) {
+              result = JSON.stringify(SSE_DEFINITIONS[category as keyof typeof SSE_DEFINITIONS], null, 2);
             } else {
               result =
                 "ERROR: Category not found in Hard Deck. Available: Group, Unit, timer, trigger, coalition.";
@@ -284,16 +301,16 @@ export async function* sendMessageStream(
         }
 
         functionResponses.push({
-          id: call.id,
-          name: call.name,
-          response: { result: result },
+          functionResponse: {
+            id: call.id,
+            name: call.name,
+            response: { result: result },
+          },
         });
       }
 
       if (functionResponses.length > 0) {
-        currentTurnMessage = functionResponses.map((fr) => ({
-          functionResponse: fr,
-        }));
+        currentTurnMessage = functionResponses;
         continue;
       }
     }

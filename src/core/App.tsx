@@ -69,12 +69,9 @@ const MainLayout: React.FC = () => {
     useScrollManager(messages, isGenerating);
   const [input, setInput] = useState("");
 
-  // --- THEME APPLICATOR (The Professional Fix) ---
-  useEffect(() => {
-    // Apply theme classes directly to the body.
-    // This ensures scrollbars and portals inherit variables correctly.
-    document.body.className = `mode-${settings.themeMode} accent-${settings.themeAccent}`;
-  }, [settings.themeMode, settings.themeAccent]);
+  // --- THEME APPLICATOR (Handled by SettingsContext) ---
+  // Redundant logic removed to prevent race conditions.
+  // SettingsContext now applies the class synchronously on init and via effect on update.
 
   // Check Onboarding
   useEffect(() => {

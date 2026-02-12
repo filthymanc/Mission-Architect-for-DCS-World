@@ -13,6 +13,34 @@ import { Session, Message } from "../../core/types";
 import { STORAGE_KEYS } from "../../core/constants";
 
 /**
+ * Type Guard: Validate Session Object
+ */
+const isSession = (data: unknown): data is Session => {
+  if (typeof data !== "object" || data === null) return false;
+  const s = data as Record<string, unknown>;
+  return (
+    typeof s.id === "string" &&
+    typeof s.name === "string" &&
+    (typeof s.createdAt === "string" || s.createdAt instanceof Date) &&
+    (typeof s.lastModified === "string" || s.lastModified instanceof Date)
+  );
+};
+
+/**
+ * Type Guard: Validate Message Object
+ */
+const isMessage = (data: unknown): data is Message => {
+  if (typeof data !== "object" || data === null) return false;
+  const m = data as Record<string, unknown>;
+  return (
+    typeof m.id === "string" &&
+    typeof m.text === "string" &&
+    (m.role === "user" || m.role === "model") &&
+    (typeof m.timestamp === "string" || m.timestamp instanceof Date)
+  );
+};
+
+/**
  * Loads the Session Index.
  * Direct load for v2.5+ (Standardized Keys)
  */
@@ -21,14 +49,15 @@ export const loadSessionIndex = (): Session[] => {
     const raw = localStorage.getItem(STORAGE_KEYS.INDEX);
 
     if (raw) {
-      const parsed = JSON.parse(raw);
+      const parsed: unknown = JSON.parse(raw);
       if (Array.isArray(parsed)) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return parsed.map((s: any) => ({
-          ...s,
-          createdAt: new Date(s.createdAt),
-          lastModified: new Date(s.lastModified),
-        }));
+        return parsed
+          .filter(isSession)
+          .map((s) => ({
+            ...s,
+            createdAt: new Date(s.createdAt),
+            lastModified: new Date(s.lastModified),
+          }));
       }
     }
 
@@ -59,16 +88,17 @@ export const loadSessionMessages = (sessionId: string): Message[] => {
     const raw = localStorage.getItem(key);
     if (!raw) return [];
 
-    const parsed = JSON.parse(raw);
+    const parsed: unknown = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
 
-    // Hydrate Dates
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return parsed.map((m: any) => ({
-      ...m,
-      timestamp: new Date(m.timestamp),
-      isStreaming: false, // Always reset streaming state on load
-    }));
+    // Hydrate Dates and Filter Invalid Messages
+    return parsed
+      .filter(isMessage)
+      .map((m) => ({
+        ...m,
+        timestamp: new Date(m.timestamp),
+        isStreaming: false, // Always reset streaming state on load
+      }));
   } catch (e) {
     console.error(
       `Storage Error: Failed to load messages for session ${sessionId}`,
