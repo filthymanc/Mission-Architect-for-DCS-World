@@ -42,7 +42,7 @@ export default defineConfig({
   base: "/Mission-Architect-for-DCS-World/",
   server: {
     port: 3000,
-    open: true,
+    open: false,
   },
   build: {
     outDir: "dist",
