@@ -9,17 +9,22 @@
  * You should have received a copy of the GNU General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React, { useEffect } from 'react';
-import { AlertIcon, CheckIcon, XIcon } from './Icons';
+import React, { useEffect } from "react";
+import { AlertIcon, CheckIcon, XIcon } from "./Icons";
 
 interface ToastProps {
   message: string;
-  type?: 'success' | 'error' | 'info';
+  type?: "success" | "error" | "info";
   onClose: () => void;
   duration?: number;
 }
 
-const Toast: React.FC<ToastProps> = ({ message, type = 'info', onClose, duration = 3000 }) => {
+const Toast: React.FC<ToastProps> = ({
+  message,
+  type = "info",
+  onClose,
+  duration = 3000,
+}) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       onClose();
@@ -28,21 +33,24 @@ const Toast: React.FC<ToastProps> = ({ message, type = 'info', onClose, duration
   }, [onClose, duration]);
 
   const bgColors = {
-    success: 'bg-app-brand/90 border-app-brand shadow-app-brand/20',
-    error: 'bg-red-600/90 border-red-500 shadow-red-900/20',
-    info: 'bg-app-surface/90 border-app-border shadow-app-overlay/20'
+    success: "bg-app-brand/90 border-app-brand shadow-app-brand/20",
+    error: "bg-red-600/90 border-red-500 shadow-red-900/20",
+    info: "bg-app-surface/90 border-app-border shadow-app-overlay/20",
   };
 
   return (
-    <div role="alert" className={`fixed bottom-6 left-1/2 transform -translate-x-1/2 z-[60] flex items-center gap-3 px-6 py-3 rounded-lg shadow-2xl backdrop-blur-sm border ${bgColors[type]} text-white animate-bounce`}>
-      {type === 'success' && (
-        <CheckIcon className="h-5 w-5" />
-      )}
-      {type === 'error' && (
-        <AlertIcon className="h-5 w-5" />
-      )}
+    <div
+      role="alert"
+      className={`fixed bottom-6 left-1/2 transform -translate-x-1/2 z-[60] flex items-center gap-3 px-6 py-3 rounded-lg shadow-2xl backdrop-blur-sm border ${bgColors[type]} text-white animate-bounce`}
+    >
+      {type === "success" && <CheckIcon className="h-5 w-5" />}
+      {type === "error" && <AlertIcon className="h-5 w-5" />}
       <span className="font-semibold text-sm">{message}</span>
-      <button onClick={onClose} className="ml-2 opacity-70 hover:opacity-100" aria-label="Close Notification">
+      <button
+        onClick={onClose}
+        className="ml-2 opacity-70 hover:opacity-100"
+        aria-label="Close Notification"
+      >
         <XIcon className="h-4 w-4" />
       </button>
     </div>

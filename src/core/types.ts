@@ -22,16 +22,16 @@ export interface TokenUsage {
 
 export interface Message {
   id: string;
-  role: 'user' | 'model';
+  role: "user" | "model";
   text: string;
   timestamp: Date;
   isStreaming?: boolean;
   sources?: Source[];
-  modelUsed?: string;          // The model requested by the UI
-  verifiedModel?: string;      // The model version reported by the API response
-  tokenUsage?: TokenUsage;     // Token counts reported by the API
-  timingMs?: number;           // Generation duration
-  librarianStatus?: string;    // Current status of the Librarian tool (e.g., "Fetching SPAWN...")
+  modelUsed?: string; // The model requested by the UI
+  verifiedModel?: string; // The model version reported by the API response
+  tokenUsage?: TokenUsage; // Token counts reported by the API
+  timingMs?: number; // Generation duration
+  librarianStatus?: string; // Current status of the Librarian tool (e.g., "Fetching SPAWN...")
 }
 
 export interface ChatState {
@@ -47,11 +47,17 @@ export interface Session {
   lastModified: Date;
 }
 
-export type ModelType = 'gemini-3-flash-preview' | 'gemini-3-pro-preview';
-export type ApiStatus = 'idle' | 'connecting' | 'thinking' | 'error' | 'streaming' | 'offline';
+export type ModelType = "gemini-3-flash-preview" | "gemini-3-pro-preview";
+export type ApiStatus =
+  | "idle"
+  | "connecting"
+  | "thinking"
+  | "error"
+  | "streaming"
+  | "offline";
 
-export type ThemeMode = 'standard' | 'carbon' | 'oled' | 'paper';
-export type ThemeAccent = 'emerald' | 'cyan' | 'amber' | 'rose' | 'violet';
+export type ThemeMode = "standard" | "carbon" | "oled" | "paper";
+export type ThemeAccent = "emerald" | "cyan" | "amber" | "rose" | "violet";
 
 export interface AppSettings {
   model: ModelType;

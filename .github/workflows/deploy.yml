@@ -1,4 +1,3 @@
-
 name: Deploy to GitHub Pages
 
 on:
@@ -21,20 +20,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           # Cache removed because package-lock.json does not exist on tablet/web edits
-          
+
       - name: Install dependencies
         # 'npm install' generates the lockfile on the fly, unlike 'npm ci'
         run: npm install
-        
+
       - name: Build
         run: npm run build
-        
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

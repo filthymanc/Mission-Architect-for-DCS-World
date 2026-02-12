@@ -9,7 +9,7 @@
  * You should have received a copy of the GNU General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 /**
  * Traps focus within a container for accessibility.
@@ -26,20 +26,24 @@ export const useFocusTrap = (isActive: boolean) => {
       // 1. Capture the element that had focus before the modal opened
       previousFocusRef.current = document.activeElement as HTMLElement;
 
-      const focusableQuery = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+      const focusableQuery =
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
       const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key !== 'Tab') return;
+        if (e.key !== "Tab") return;
         if (!containerRef.current) return;
 
-        const focusableElements = containerRef.current.querySelectorAll(focusableQuery);
+        const focusableElements =
+          containerRef.current.querySelectorAll(focusableQuery);
         if (focusableElements.length === 0) {
-            e.preventDefault();
-            return;
+          e.preventDefault();
+          return;
         }
 
         const firstElement = focusableElements[0] as HTMLElement;
-        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+        const lastElement = focusableElements[
+          focusableElements.length - 1
+        ] as HTMLElement;
 
         if (e.shiftKey) {
           // Shift + Tab: If on first, wrap to last
@@ -56,27 +60,28 @@ export const useFocusTrap = (isActive: boolean) => {
         }
       };
 
-      document.addEventListener('keydown', handleKeyDown);
+      document.addEventListener("keydown", handleKeyDown);
 
       // 2. Initial Focus: Delay slightly to allow render to complete
       setTimeout(() => {
-          if (containerRef.current) {
-              const focusableElements = containerRef.current.querySelectorAll(focusableQuery);
-              if (focusableElements.length > 0) {
-                  (focusableElements[0] as HTMLElement).focus();
-              } else {
-                  // Fallback: Focus the container itself if no inputs exist
-                  containerRef.current.focus();
-              }
+        if (containerRef.current) {
+          const focusableElements =
+            containerRef.current.querySelectorAll(focusableQuery);
+          if (focusableElements.length > 0) {
+            (focusableElements[0] as HTMLElement).focus();
+          } else {
+            // Fallback: Focus the container itself if no inputs exist
+            containerRef.current.focus();
           }
+        }
       }, 50);
 
       // Cleanup
       return () => {
-        document.removeEventListener('keydown', handleKeyDown);
+        document.removeEventListener("keydown", handleKeyDown);
         // 3. Restore Focus
         if (previousFocusRef.current) {
-            previousFocusRef.current.focus();
+          previousFocusRef.current.focus();
         }
       };
     }
