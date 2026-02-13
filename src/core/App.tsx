@@ -11,13 +11,13 @@ import * as storage from "../shared/services/storageService";
 // Components
 import Sidebar from "../features/mission/Sidebar";
 import Dashboard from "../features/mission/Dashboard";
-import ChatMessage from "../features/chat/ChatMessage";
+import ChatInput from "../features/chat/ChatInput";
 import LoginScreen from "../features/auth/LoginScreen";
 import ErrorBoundary from "../shared/ui/ErrorBoundary";
 import OnboardingModal from "../shared/ui/OnboardingModal";
 import FieldManual from "../shared/ui/FieldManual";
 import Toast from "../shared/ui/Toast";
-import { MenuIcon, SendIcon, TrashIcon } from "../shared/ui/Icons";
+import { MenuIcon, TrashIcon } from "../shared/ui/Icons";
 import { STORAGE_KEYS, MODELS } from "./constants";
 
 const MainLayout: React.FC = () => {
@@ -68,7 +68,6 @@ const MainLayout: React.FC = () => {
 
   const { messagesEndRef, scrollContainerRef, handleScroll, scrollToBottom } =
     useScrollManager(messages, isGenerating);
-  const [input, setInput] = useState("");
 
   // --- THEME APPLICATOR (Handled by SettingsContext) ---
   // Redundant logic removed to prevent race conditions.
@@ -94,23 +93,15 @@ const MainLayout: React.FC = () => {
     setToast({ message, type });
   };
 
-  const handleSend = () => {
-    if (!input.trim()) return;
-    sendMessage(input);
-    setInput("");
+  const handleSendMessage = (text: string) => {
+    sendMessage(text);
     scrollToBottom();
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && e.ctrlKey) {
-      handleSend();
-    }
   };
 
   const handleExport = async () => {
     try {
       const exportData = {
-        version: "2.4.6",
+        version: "2.5.0",
         timestamp: Date.now(),
         settings,
         sessions: sessions,
@@ -337,43 +328,14 @@ const MainLayout: React.FC = () => {
 
         {/* INPUT AREA */}
         <div className="p-4 bg-app-frame border-t border-app-border shrink-0 z-20">
-          <div className="max-w-4xl mx-auto relative">
-            <textarea
-              id="chat-input"
-              name="chat-input"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="Instruct the Architect... (Ctrl+Enter to send)"
-              disabled={isGenerating}
-              className="w-full bg-app-surface border border-app-border rounded-xl pl-4 pr-12 py-3.5 text-sm focus:outline-none focus:border-app-brand focus:ring-1 focus:ring-app-brand transition-all resize-none shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-              rows={1}
-              style={{ minHeight: "52px", maxHeight: "150px" }}
-            />
-
-            <div className="absolute right-2 bottom-2">
-              {isGenerating ? (
-                <button
-                  onClick={stopGeneration}
-                  className="p-2 bg-red-500/10 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-all"
-                  title="Stop Generation"
-                >
-                  <div className="w-4 h-4 rounded-sm bg-current" />
-                </button>
-              ) : (
-                <button
-                  onClick={handleSend}
-                  disabled={!input.trim()}
-                  className="p-2 bg-app-brand text-white rounded-lg hover:bg-opacity-90 disabled:bg-app-border disabled:text-app-tertiary transition-all shadow-lg shadow-app-brand/20 disabled:shadow-none"
-                >
-                  <SendIcon className="h-4 w-4" />
-                </button>
-              )}
-            </div>
-          </div>
+          <ChatInput
+            onSend={handleSendMessage}
+            onStop={stopGeneration}
+            isGenerating={isGenerating}
+          />
           <div className="max-w-4xl mx-auto mt-2 flex justify-between text-[10px] text-app-tertiary font-mono">
             <span>Model: {settings.model}</span>
-            <span>v{import.meta.env.VITE_APP_VERSION || "2.4.6"}</span>
+            <span>v{import.meta.env.VITE_APP_VERSION || "2.5.0"}</span>
           </div>
         </div>
 

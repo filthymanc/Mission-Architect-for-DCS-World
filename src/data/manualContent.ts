@@ -136,10 +136,10 @@ export const MANUAL_CONTENT = {
     stack: {
       subtitle: "Stack Architecture",
       items: [
-        "Framework: React 18 + TypeScript",
+        "Framework: React 19 + TypeScript",
         "Styling: Tailwind CSS",
         "Intelligence: Google Gemini Pro/Flash (via @google/genai)",
-        "Storage: LocalStorage (No Backend)",
+        "Storage: IndexedDB (Client-Side Database)",
         "Deployment: GitHub Pages + Vite",
       ],
     },

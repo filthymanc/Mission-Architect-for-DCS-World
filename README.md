@@ -1,6 +1,6 @@
 # Mission Architect for DCS
 
-![Version](https://img.shields.io/badge/version-2.4.6--beta-blue)
+![Version](https://img.shields.io/badge/version-2.5.0-blue)
 ![Status](https://img.shields.io/badge/status-Live-emerald)
 ![Tech](https://img.shields.io/badge/Powered_by-Gemini_Pro-orange)
 ![License](https://img.shields.io/badge/license-GPLv3-blue)

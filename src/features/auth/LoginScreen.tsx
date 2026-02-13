@@ -86,6 +86,15 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
           }}
           className="space-y-4"
         >
+          {/* Hidden username field for accessibility/password managers */}
+          <input
+            type="text"
+            name="username"
+            autoComplete="username"
+            className="hidden"
+            aria-hidden="true"
+          />
+
           <div className="space-y-2">
             <div className="flex justify-between items-center px-1">
               <label

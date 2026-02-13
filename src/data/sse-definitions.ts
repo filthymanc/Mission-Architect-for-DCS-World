@@ -11,7 +11,7 @@
 
 /**
  * DCS Standard Scripting Engine (SSE) Hard Deck
- * Version: v2.4.6-beta
+ * Version: v2.5.0
  *
  * This file contains Functional Specifications (Type Definitions) for the core DCS classes.
  * It serves as a "Hard Deck" to prevent the AI from hallucinating methods that do not exist.

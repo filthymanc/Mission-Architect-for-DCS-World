@@ -10,7 +10,7 @@
     "6. UPDATE 'metadata.json' (Cosmetic)",
     "7. UPDATE 'README.md' Badges (Documentation)"
   ],
-  "version": "2.4.6-beta",
+  "version": "2.5.0",
   "license": "GPL-3.0",
   "type": "module",
   "scripts": {

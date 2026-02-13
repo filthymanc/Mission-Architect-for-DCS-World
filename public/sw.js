@@ -10,7 +10,7 @@
  */
 
 // --- CONFIGURATION ---
-const APP_VERSION = "2.4.6-beta"; // Sync with package.json
+const APP_VERSION = "2.5.0"; // Sync with package.json
 const CACHE_NAME = `mission-architect-v${APP_VERSION}`;
 const REPO_PATH = "/Mission-Architect-for-DCS-World"; // GitHub Pages Repository Name
 
