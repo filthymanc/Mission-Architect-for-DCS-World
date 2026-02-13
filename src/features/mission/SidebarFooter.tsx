@@ -19,6 +19,7 @@ import {
   LogoutIcon,
   CheckIcon,
   RefreshIcon,
+  GithubIcon,
 } from "../../shared/ui/Icons";
 import { clearAllData } from "../../shared/services/storageService";
 import { APP_VERSION, AUTHOR_CREDIT } from "../../core/version";
@@ -211,9 +212,33 @@ const SidebarFooter: React.FC<SidebarFooterProps> = ({
         )}
       </button>
 
+      <div className="flex justify-center gap-4 pt-2 border-t border-app-border/30">
+        <a
+          href="https://github.com/filthymanc/Mission-Architect-for-DCS-World"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-app-tertiary hover:text-app-primary transition-colors"
+          title="GitHub Repository"
+        >
+          <GithubIcon className="h-4 w-4" />
+        </a>
+        <a
+          href="https://github.com/filthymanc/Mission-Architect-for-DCS-World/issues"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-app-tertiary hover:text-red-400 transition-colors"
+          title="Report Issue / Contact Developer"
+        >
+          <AlertIcon className="h-4 w-4" />
+        </a>
+      </div>
+
       <div className="text-[10px] text-app-tertiary text-center flex flex-col items-center gap-1">
-        <p>v{APP_VERSION}</p>
+        <p className="font-mono">v{APP_VERSION}</p>
         <p className="opacity-75">{AUTHOR_CREDIT}</p>
+        <p className="opacity-50 text-[9px] leading-tight max-w-[200px]">
+          DCS World is a trademark of Eagle Dynamics SA.
+        </p>
       </div>
     </div>
   );

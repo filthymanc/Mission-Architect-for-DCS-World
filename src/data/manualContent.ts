@@ -177,8 +177,15 @@ export const MANUAL_CONTENT = {
         title: "Mission Architect",
         author: "the filthymanc",
         description:
-          "The official repository. Check here for changelogs, source code, and to report bugs or request features.",
+          "The official repository. Check here for changelogs and source code.",
         url: "https://github.com/filthymanc/Mission-Architect-for-DCS-World",
+      },
+      {
+        title: "Report Issue / Contact Developer",
+        author: "GitHub Issues",
+        description:
+          "Found a bug or have a feature request? Open a ticket on the official issue tracker.",
+        url: "https://github.com/filthymanc/Mission-Architect-for-DCS-World/issues",
       },
       {
         title: "MOOSE Framework",

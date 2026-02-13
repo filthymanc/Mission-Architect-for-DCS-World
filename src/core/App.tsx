@@ -175,12 +175,18 @@ const MainLayout: React.FC = () => {
 
   if (!hasApiKey) {
     return (
-      <LoginScreen
-        onLogin={login}
-        isVerifying={isVerifying}
-        authError={authError}
-        onOpenFieldManual={() => setIsFieldManualOpen(true)}
-      />
+      <>
+        <LoginScreen
+          onLogin={login}
+          isVerifying={isVerifying}
+          authError={authError}
+          onOpenFieldManual={() => setIsFieldManualOpen(true)}
+        />
+        <FieldManual
+          isOpen={isFieldManualOpen}
+          onClose={() => setIsFieldManualOpen(false)}
+        />
+      </>
     );
   }
 
