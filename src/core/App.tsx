@@ -12,6 +12,7 @@ import * as storage from "../shared/services/storageService";
 import Sidebar from "../features/mission/Sidebar";
 import Dashboard from "../features/mission/Dashboard";
 import ChatInput from "../features/chat/ChatInput";
+import ChatMessage from "../features/chat/ChatMessage";
 import LoginScreen from "../features/auth/LoginScreen";
 import ErrorBoundary from "../shared/ui/ErrorBoundary";
 import OnboardingModal from "../shared/ui/OnboardingModal";
