@@ -225,6 +225,11 @@ export const MANUAL_CONTENT = {
       subtitle: "Credits & Notices",
       items: [
         {
+          title: "DCS World",
+          author: "Eagle Dynamics",
+          license: "Trademark Disclaimer",
+        },
+        {
           title: "MOOSE",
           author: "FlightControl-Master",
           license: "GNU GPL v3.0",
@@ -238,6 +243,21 @@ export const MANUAL_CONTENT = {
           title: "React & Ecosystem",
           author: "Meta & Community",
           license: "MIT License",
+        },
+        {
+          title: "Tailwind CSS",
+          author: "Tailwind Labs",
+          license: "MIT License",
+        },
+        {
+          title: "Vite",
+          author: "Yuxi (Evan) You",
+          license: "MIT License",
+        },
+        {
+          title: "idb",
+          author: "Jake Archibald",
+          license: "ISC License",
         },
         {
           title: "Google GenAI SDK",
