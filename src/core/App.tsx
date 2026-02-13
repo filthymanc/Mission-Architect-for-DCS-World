@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { SettingsProvider, useSettings } from "./SettingsContext";
+import { useSettings } from "./SettingsContext";
 import { useAuth } from "../features/auth/useAuth";
 import { useSessionManager } from "../features/mission/useSessionManager";
 import { useSessionData } from "../features/mission/useSessionData";
 import { useChatEngine } from "../features/chat/useChatEngine";
 import { useScrollManager } from "../features/chat/useScrollManager";
 import { validateImportData } from "../shared/services/migrationService";
+import * as storage from "../shared/services/storageService";
 
 // Components
 import Sidebar from "../features/mission/Sidebar";
@@ -17,7 +18,7 @@ import OnboardingModal from "../shared/ui/OnboardingModal";
 import FieldManual from "../shared/ui/FieldManual";
 import Toast from "../shared/ui/Toast";
 import { MenuIcon, SendIcon, TrashIcon } from "../shared/ui/Icons";
-import { STORAGE_KEYS } from "./constants";
+import { STORAGE_KEYS, MODELS } from "./constants";
 
 const MainLayout: React.FC = () => {
   const { apiKey, hasApiKey, isVerifying, authError, login, logout } =
@@ -106,7 +107,7 @@ const MainLayout: React.FC = () => {
     }
   };
 
-  const handleExport = () => {
+  const handleExport = async () => {
     try {
       const exportData = {
         version: "2.4.6",
@@ -116,14 +117,15 @@ const MainLayout: React.FC = () => {
         messages: {} as Record<string, unknown>,
       };
 
-      sessions.forEach((s) => {
-        const msgs = localStorage.getItem(
-          `${STORAGE_KEYS.SESSION_PREFIX}${s.id}`,
-        );
-        if (msgs) {
-          exportData.messages[s.id] = JSON.parse(msgs);
-        }
-      });
+      // Load all messages in parallel
+      await Promise.all(
+        sessions.map(async (s) => {
+          const msgs = await storage.loadSessionMessages(s.id);
+          if (msgs && msgs.length > 0) {
+            exportData.messages[s.id] = msgs;
+          }
+        }),
+      );
 
       const blob = new Blob([JSON.stringify(exportData, null, 2)], {
         type: "application/json",
@@ -136,6 +138,7 @@ const MainLayout: React.FC = () => {
       URL.revokeObjectURL(url);
       showToast("Database exported successfully", "success");
     } catch (e) {
+      console.error(e);
       showToast("Export failed", "error");
     }
   };
@@ -159,12 +162,12 @@ const MainLayout: React.FC = () => {
           throw new Error("No valid sessions found");
         }
 
-        Object.keys(validMessages).forEach((sid) => {
-          localStorage.setItem(
-            `${STORAGE_KEYS.SESSION_PREFIX}${sid}`,
-            JSON.stringify(validMessages[sid]),
-          );
-        });
+        // Import Messages to IDB
+        await Promise.all(
+          Object.keys(validMessages).map((sid) =>
+            storage.saveSessionMessages(sid, validMessages[sid]),
+          ),
+        );
 
         mergeSessions(validSessions);
         if (validSettings) updateSettings(validSettings);
@@ -243,6 +246,29 @@ const MainLayout: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
+            {/* Model Toggle */}
+            <button
+              onClick={() =>
+                updateSettings({
+                  model:
+                    settings.model === MODELS.FLASH.id
+                      ? MODELS.PRO.id
+                      : MODELS.FLASH.id,
+                })
+              }
+              className={`
+                            px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider border transition-all
+                            ${
+                              settings.model.includes("pro")
+                                ? "bg-purple-900/20 border-purple-500 text-purple-500"
+                                : "bg-app-surface border-app-border text-app-tertiary hover:border-app-highlight"
+                            }
+                        `}
+              title={`Switch to ${settings.model === MODELS.FLASH.id ? "Pro" : "Flash"} Model`}
+            >
+              {settings.model.includes("flash") ? "FLASH" : "PRO"}
+            </button>
+
             {/* Unsafe Toggle */}
             <button
               onClick={() =>
@@ -313,6 +339,8 @@ const MainLayout: React.FC = () => {
         <div className="p-4 bg-app-frame border-t border-app-border shrink-0 z-20">
           <div className="max-w-4xl mx-auto relative">
             <textarea
+              id="chat-input"
+              name="chat-input"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -373,9 +401,7 @@ const MainLayout: React.FC = () => {
 const App: React.FC = () => {
   return (
     <ErrorBoundary scope="app">
-      <SettingsProvider>
-        <MainLayout />
-      </SettingsProvider>
+      <MainLayout />
     </ErrorBoundary>
   );
 };

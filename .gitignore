@@ -9,11 +9,17 @@ coverage/
 # Production
 build/
 dist/
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+.vscode\settings.json
 
 # System Files
 .DS_Store
 Thumbs.db
 *.log
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
 # Environment Variables (Safety Check)
 .env
@@ -23,5 +29,10 @@ Thumbs.db
 .env.production.local
 
 # IDEs
-
 .idea/
+.vscode/
+*.swp
+*.swo
+
+# AI Context
+.gemini/

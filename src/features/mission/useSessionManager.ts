@@ -21,43 +21,53 @@ export const useSessionManager = () => {
 
   // Load Session Index on Mount
   useEffect(() => {
-    let loadedSessions = storage.loadSessionIndex();
+    const init = async () => {
+      // Initialize IDB / Cleanup Legacy
+      await storage.initializeStorage();
 
-    // Auto-Create Default Session if empty
-    if (loadedSessions.length === 0) {
-      const defaultId = Date.now().toString();
-      const defaultSession: Session = {
-        id: defaultId,
-        name: "Mission 1",
-        createdAt: new Date(),
-        lastModified: new Date(),
-      };
+      let loadedSessions = await storage.loadSessionIndex();
 
-      // Save initial session immediately to disk
-      storage.saveSessionIndex([defaultSession]);
+      // Auto-Create Default Session if empty
+      if (loadedSessions.length === 0) {
+        const defaultId = Date.now().toString();
+        const defaultSession: Session = {
+          id: defaultId,
+          name: "Mission 1",
+          createdAt: new Date(),
+          lastModified: new Date(),
+        };
 
-      // Save initial welcome message to disk
-      const welcomeMsg: Message = {
-        id: "init-" + defaultId,
-        role: "model",
-        text: WELCOME_MESSAGE_TEXT,
-        timestamp: new Date(),
-        isStreaming: false,
-      };
-      storage.saveSessionMessages(defaultId, [welcomeMsg]);
+        // Save initial session immediately to disk
+        // We await here to ensure DB is primed before UI renders ready
+        await storage.saveSessionIndex([defaultSession]);
 
-      loadedSessions = [defaultSession];
-    }
+        // Save initial welcome message to disk
+        const welcomeMsg: Message = {
+          id: "init-" + defaultId,
+          role: "model",
+          text: WELCOME_MESSAGE_TEXT,
+          timestamp: new Date(),
+          isStreaming: false,
+        };
+        await storage.saveSessionMessages(defaultId, [welcomeMsg]);
 
-    setSessions(loadedSessions);
-    setActiveSessionId(loadedSessions[0].id);
-    setIsReady(true);
+        loadedSessions = [defaultSession];
+      }
+
+      setSessions(loadedSessions);
+      setActiveSessionId(loadedSessions[0].id);
+      setIsReady(true);
+    };
+
+    init();
   }, []);
 
   // Persist Index whenever sessions change
   useEffect(() => {
     if (isReady) {
-      storage.saveSessionIndex(sessions);
+      storage.saveSessionIndex(sessions).catch((e) => {
+        console.error("Failed to sync sessions index", e);
+      });
     }
   }, [sessions, isReady]);
 
@@ -91,7 +101,7 @@ export const useSessionManager = () => {
       setSessions((prev) => [newSession, ...prev]);
       setActiveSessionId(id);
 
-      // Initialize with a welcome message
+      // Initialize with a welcome message (Async side-effect)
       const welcomeMsg: Message = {
         id: "init-" + id,
         role: "model",
@@ -99,7 +109,7 @@ export const useSessionManager = () => {
         timestamp: new Date(),
         isStreaming: false,
       };
-      storage.saveSessionMessages(id, [welcomeMsg]);
+      storage.saveSessionMessages(id, [welcomeMsg]).catch(console.error);
 
       return id;
     },
@@ -112,8 +122,8 @@ export const useSessionManager = () => {
       const newSessions = sessions.filter((s) => s.id !== id);
       setSessions(newSessions);
 
-      // 2. Remove data from storage
-      storage.deleteSessionData(id);
+      // 2. Remove data from storage (Async side-effect)
+      storage.deleteSessionData(id).catch(console.error);
 
       // 3. Handle active ID switch
       if (activeSessionId === id) {

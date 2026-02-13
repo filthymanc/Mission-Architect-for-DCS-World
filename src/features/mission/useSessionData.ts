@@ -28,25 +28,40 @@ export const useSessionData = (targetSessionId: string | null) => {
   const isLoadingData = targetSessionId !== loadedSessionId;
 
   useEffect(() => {
+    let active = true;
+
     if (!targetSessionId) {
       setMessages([]);
       setLoadedSessionId(null);
       return;
     }
 
-    // Load data from storage
-    // Even though localStorage is synchronous, we treat it as an effect
-    // to keep the render path clean.
-    const data = storage.loadSessionMessages(targetSessionId);
+    // Load data from storage (Async)
+    const load = async () => {
+      try {
+        const data = await storage.loadSessionMessages(targetSessionId);
+        if (active) {
+          setMessages(data);
+          setLoadedSessionId(targetSessionId);
+        }
+      } catch (e) {
+        console.error("Failed to load session messages", e);
+      }
+    };
 
-    setMessages(data);
-    setLoadedSessionId(targetSessionId);
+    load();
+
+    return () => {
+      active = false;
+    };
   }, [targetSessionId]);
 
   const updateMessages = (newMessages: Message[]) => {
     setMessages(newMessages);
     if (targetSessionId) {
-      storage.saveSessionMessages(targetSessionId, newMessages);
+      storage
+        .saveSessionMessages(targetSessionId, newMessages)
+        .catch(console.error);
     }
   };
 

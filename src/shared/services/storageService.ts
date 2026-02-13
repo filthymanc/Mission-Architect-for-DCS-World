@@ -11,57 +11,41 @@
 
 import { Session, Message } from "../../core/types";
 import { STORAGE_KEYS } from "../../core/constants";
+import * as idb from "./idbService";
 
 /**
- * Type Guard: Validate Session Object
+ * Initializes the storage subsystem.
+ * Performs a one-time cleanup of legacy LocalStorage data to prevent conflicts.
  */
-const isSession = (data: unknown): data is Session => {
-  if (typeof data !== "object" || data === null) return false;
-  const s = data as Record<string, unknown>;
-  return (
-    typeof s.id === "string" &&
-    typeof s.name === "string" &&
-    (typeof s.createdAt === "string" || s.createdAt instanceof Date) &&
-    (typeof s.lastModified === "string" || s.lastModified instanceof Date)
-  );
-};
-
-/**
- * Type Guard: Validate Message Object
- */
-const isMessage = (data: unknown): data is Message => {
-  if (typeof data !== "object" || data === null) return false;
-  const m = data as Record<string, unknown>;
-  return (
-    typeof m.id === "string" &&
-    typeof m.text === "string" &&
-    (m.role === "user" || m.role === "model") &&
-    (typeof m.timestamp === "string" || m.timestamp instanceof Date)
-  );
+export const initializeStorage = async () => {
+  try {
+    const legacyIndex = localStorage.getItem(STORAGE_KEYS.INDEX);
+    if (legacyIndex) {
+      console.log("Storage: Legacy data detected. Performing cleanup...");
+      
+      // Remove legacy keys
+      localStorage.removeItem(STORAGE_KEYS.INDEX);
+      
+      // Pattern Matching Removals for Sessions
+      Object.keys(localStorage).forEach((key) => {
+        if (key.startsWith(STORAGE_KEYS.SESSION_PREFIX)) {
+          localStorage.removeItem(key);
+        }
+      });
+      
+      console.log("Storage: Legacy cleanup complete. Switched to IndexedDB.");
+    }
+  } catch (e) {
+    console.error("Storage Error: Failed to initialize/cleanup", e);
+  }
 };
 
 /**
  * Loads the Session Index.
- * Direct load for v2.5+ (Standardized Keys)
  */
-export const loadSessionIndex = (): Session[] => {
+export const loadSessionIndex = async (): Promise<Session[]> => {
   try {
-    const raw = localStorage.getItem(STORAGE_KEYS.INDEX);
-
-    if (raw) {
-      const parsed: unknown = JSON.parse(raw);
-      if (Array.isArray(parsed)) {
-        return parsed
-          .filter(isSession)
-          .map((s) => ({
-            ...s,
-            createdAt: new Date(s.createdAt),
-            lastModified: new Date(s.lastModified),
-          }));
-      }
-    }
-
-    return [];
+    return await idb.getAllSessions();
   } catch (e) {
     console.error("Storage Error: Failed to load session index", e);
     return [];
@@ -71,9 +55,10 @@ export const loadSessionIndex = (): Session[] => {
 /**
  * Saves the Session Index
  */
-export const saveSessionIndex = (sessions: Session[]) => {
+export const saveSessionIndex = async (sessions: Session[]): Promise<void> => {
   try {
-    localStorage.setItem(STORAGE_KEYS.INDEX, JSON.stringify(sessions));
+    // We strictly overwrite the entire list to maintain order/sync
+    await idb.saveAllSessions(sessions);
   } catch (e) {
     console.error("Storage Error: Failed to save session index", e);
   }
@@ -82,27 +67,13 @@ export const saveSessionIndex = (sessions: Session[]) => {
 /**
  * Loads messages for a specific session ID (Lazy Load)
  */
-export const loadSessionMessages = (sessionId: string): Message[] => {
+export const loadSessionMessages = async (sessionId: string): Promise<Message[]> => {
   try {
-    const key = `${STORAGE_KEYS.SESSION_PREFIX}${sessionId}`;
-    const raw = localStorage.getItem(key);
-    if (!raw) return [];
-
-    const parsed: unknown = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
-
-    // Hydrate Dates and Filter Invalid Messages
-    return parsed
-      .filter(isMessage)
-      .map((m) => ({
-        ...m,
-        timestamp: new Date(m.timestamp),
-        isStreaming: false, // Always reset streaming state on load
-      }));
+    return await idb.getSessionMessages(sessionId);
   } catch (e) {
     console.error(
       `Storage Error: Failed to load messages for session ${sessionId}`,
-      e,
+      e
     );
     return [];
   }
@@ -111,29 +82,30 @@ export const loadSessionMessages = (sessionId: string): Message[] => {
 /**
  * Saves messages for a specific session ID
  */
-export const saveSessionMessages = (sessionId: string, messages: Message[]) => {
+export const saveSessionMessages = async (sessionId: string, messages: Message[]): Promise<void> => {
   try {
-    const key = `${STORAGE_KEYS.SESSION_PREFIX}${sessionId}`;
-    localStorage.setItem(key, JSON.stringify(messages));
+    await idb.saveSessionMessages(sessionId, messages);
   } catch (e) {
     console.error(
       `Storage Error: Failed to save messages for session ${sessionId}`,
-      e,
+      e
     );
   }
 };
 
 /**
- * Deletes a specific session's message history
+ * Deletes a specific session's message history and the session entry itself
  */
-export const deleteSessionData = (sessionId: string) => {
+export const deleteSessionData = async (sessionId: string): Promise<void> => {
   try {
-    const key = `${STORAGE_KEYS.SESSION_PREFIX}${sessionId}`;
-    localStorage.removeItem(key);
+    // Delete messages
+    await idb.deleteSessionMessages(sessionId);
+    // Delete session meta
+    await idb.deleteSession(sessionId);
   } catch (e) {
     console.error(
       `Storage Error: Failed to delete session data ${sessionId}`,
-      e,
+      e
     );
   }
 };
@@ -141,10 +113,14 @@ export const deleteSessionData = (sessionId: string) => {
 /**
  * Clears all app data (Factory Reset)
  */
-export const clearAllData = () => {
+export const clearAllData = async (): Promise<void> => {
   try {
+    // Clear IDB
+    await idb.clearDatabase();
+
+    // Clear LocalStorage (Settings, API Keys, etc.)
     const keysToRemove = [
-      STORAGE_KEYS.INDEX,
+      STORAGE_KEYS.INDEX, // Just in case
       STORAGE_KEYS.API_KEY,
       STORAGE_KEYS.SETTINGS,
       STORAGE_KEYS.ONBOARDED,
@@ -152,7 +128,7 @@ export const clearAllData = () => {
 
     keysToRemove.forEach((k) => localStorage.removeItem(k));
 
-    // Pattern Matching Removals for Sessions and Caches
+    // Clear legacy pattern keys just in case
     Object.keys(localStorage).forEach((key) => {
       if (
         key.startsWith(STORAGE_KEYS.SESSION_PREFIX) ||
@@ -162,7 +138,7 @@ export const clearAllData = () => {
       }
     });
 
-    console.log("Factory Reset Complete: All local data wiped.");
+    console.log("Factory Reset Complete: All data wiped.");
   } catch (e) {
     console.error("Storage Error: Failed to clear all data", e);
   }

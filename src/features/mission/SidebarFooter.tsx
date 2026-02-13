@@ -53,9 +53,9 @@ const SidebarFooter: React.FC<SidebarFooterProps> = ({
     }
   };
 
-  const handleFactoryReset = () => {
+  const handleFactoryReset = async () => {
     if (isResetConfirming) {
-      clearAllData();
+      await clearAllData();
       window.location.reload();
     } else {
       setIsResetConfirming(true);
