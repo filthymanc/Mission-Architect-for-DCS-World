@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* 
+   * ROOT DEFAULTS (Slate/Standard) 
+   * Defined on :root for fallback.
+   */
+  :root {
+    --bg-canvas: 15 23 42;
+    --bg-frame: 2 6 23;
+    --bg-surface: 30 41 59;
+    --bg-overlay: 2 6 23;
+
+    --text-primary: 226 232 240;
+    --text-secondary: 148 163 184;
+    --text-tertiary: 100 116 139;
+
+    --border-base: 30 41 59;
+    --border-highlight: 51 65 85;
+
+    /* Default Accent: Emerald */
+    --color-brand: 16 185 129;
+    --color-brand-dim: 6 95 70;
+  }
+}
+
+/* 
+  * THEME MODES
+  * Moved outside @layer base to prevent Tailwind purging
+  * logic when classes are added dynamically.
+  */
+
+/* Standard: Explicit Fallback */
+body.mode-standard {
+  --bg-canvas: 15 23 42;
+  --bg-frame: 2 6 23;
+  --bg-surface: 30 41 59;
+  --bg-overlay: 2 6 23;
+
+  --text-primary: 226 232 240;
+  --text-secondary: 148 163 184;
+  --text-tertiary: 100 116 139;
+
+  --border-base: 30 41 59;
+  --border-highlight: 51 65 85;
+}
+
+/* Carbon: Neutral Gray/Zinc */
+body.mode-carbon {
+  --bg-canvas: 24 24 27;
+  --bg-frame: 9 9 11;
+  --bg-surface: 39 39 42;
+  --bg-overlay: 9 9 11;
+
+  --text-primary: 228 228 231;
+  --text-secondary: 161 161 170;
+  --text-tertiary: 113 113 122;
+
+  --border-base: 63 63 70;
+  --border-highlight: 82 82 91;
+}
+
+/* OLED: Pure Black */
+body.mode-oled {
+  --bg-canvas: 0 0 0;
+  --bg-frame: 0 0 0;
+  --bg-surface: 10 10 10;
+  --bg-overlay: 0 0 0;
+
+  --text-primary: 212 212 216;
+  --text-secondary: 82 82 91;
+  --text-tertiary: 63 63 70;
+
+  --border-base: 39 39 42;
+  --border-highlight: 63 63 70;
+}
+
+/* Paper: Light Mode */
+body.mode-paper {
+  --bg-canvas: 248 250 252;
+  --bg-frame: 255 255 255;
+  --bg-surface: 241 245 249;
+  --bg-overlay: 255 255 255;
+
+  --text-primary: 15 23 42;
+  --text-secondary: 71 85 105;
+  --text-tertiary: 148 163 184;
+
+  --border-base: 226 232 240;
+  --border-highlight: 203 213 225;
+  
+  /* Paper mode needs a stronger brand contrast generally */
+  --bg-overlay: 255 255 255;
+}
+
+/* --- ACCENT COLORS --- */
+
+body.accent-cyan {
+  --color-brand: 6 182 212;
+  --color-brand-dim: 21 94 117;
+}
+
+body.accent-amber {
+  --color-brand: 245 158 11;
+  --color-brand-dim: 120 53 15;
+}
+
+body.accent-rose {
+  --color-brand: 244 63 94;
+  --color-brand-dim: 136 19 55;
+}
+
+body.accent-violet {
+  --color-brand: 139 92 246;
+  --color-brand-dim: 76 29 149;
+}
+
+body.accent-emerald {
+  --color-brand: 16 185 129;
+  --color-brand-dim: 6 95 70;
+}
+
+/* Custom Scrollbar - Critical for WebKit browsers */
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--border-base));
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(var(--border-highlight));
+  }
+}

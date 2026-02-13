@@ -9,31 +9,31 @@
  * You should have received a copy of the GNU General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { AUTHOR_CREDIT } from '../version';
+import { AUTHOR_CREDIT } from "../core/version";
 
 export const MANUAL_CONTENT = {
   briefing: {
     concept: {
       subtitle: "The Concept",
       title: "Design. Refine. Deploy.",
-      text: "The Mission Architect is a collaborative partner for DCS mission design. It bridges the gap between your creative ideas and the technical complexities of Lua scripting, allowing you to focus on the scenario while it handles the underlying logic and framework accuracy."
+      text: "The Mission Architect is a collaborative partner for DCS mission design. It bridges the gap between your creative ideas and the technical complexities of Lua scripting, allowing you to focus on the scenario while it handles the underlying logic and framework accuracy.",
     },
     features: [
       {
         title: "Any Device, Anywhere",
         text: "Designed as a Progressive Web App (PWA), the Architect runs seamlessly on your PC, iPad, or Android tablet. This flexibility allows you to keep your reference materials and logic builder on a separate screen from your primary flight simulator.",
-        iconType: "device"
+        iconType: "device",
       },
       {
         title: "Data Sovereignty",
         text: "Your mission ideas, API keys, and chat logs are stored locally in your browser. With no backend database, your intellectual property remains entirely under your control while the AI assists with the engineering.",
-        iconType: "lock"
-      }
+        iconType: "lock",
+      },
     ],
     engine: {
       subtitle: "Engine Architecture",
-      text: "Optimised for the Google Gemini ecosystem, this system utilises a massive context window to reference entire MOOSE and DML documentation files in real-time, providing high-fidelity responses and reducing technical errors."
-    }
+      text: "Optimised for the Google Gemini ecosystem, this system utilises a massive context window to reference entire MOOSE and DML documentation files in real-time, providing high-fidelity responses and reducing technical errors.",
+    },
   },
   systems: {
     interface: {
@@ -42,152 +42,241 @@ export const MANUAL_CONTENT = {
         {
           title: "Mission Control (Sidebar)",
           items: [
-            { label: "NEW MISSION", color: "emerald", text: "Starts a fresh session context. Use this when moving to a new task to ensure the AI remains focused on the specific logic at hand." },
-            { label: "IMPORT/EXPORT", color: "purple", text: "Enables you to back up your database to a JSON file, making it easy to transfer your design sessions between your PC and tablet." },
-            { label: "RESET/WIPE", color: "red", text: "Performs a full wipe of local storage. Use this only if you wish to clear all saved data and return to a clean state." }
-          ]
+            {
+              label: "NEW MISSION",
+              color: "emerald",
+              text: "Starts a fresh session context. Use this when moving to a new task to ensure the AI remains focused on the specific logic at hand.",
+            },
+            {
+              label: "IMPORT/EXPORT",
+              color: "purple",
+              text: "Enables you to back up your database to a JSON file, making it easy to transfer your design sessions between your PC and tablet.",
+            },
+            {
+              label: "RESET/WIPE",
+              color: "red",
+              text: "Performs a full wipe of local storage. Use this only if you wish to clear all saved data and return to a clean state.",
+            },
+          ],
         },
         {
           title: "Header Controls",
           items: [
-             { label: "Trash Icon", color: "slate", text: "\"Clear History\". Resets the conversation for the active session, allowing you to restart your current logic block without losing the session itself." },
-             { label: "SAFE / UNSAFE", color: "red", text: "Toggles the \"Hard Deck\". In Safe mode, the AI avoids generating code that interacts with your operating system. Unsafe mode allows for advanced scripting requiring desanitised DCS environments." }
-          ]
-        }
-      ]
+            {
+              label: "Trash Icon",
+              color: "slate",
+              text: '"Clear History". Resets the conversation for the active session, allowing you to restart your current logic block without losing the session itself.',
+            },
+            {
+              label: "SAFE / UNSAFE",
+              color: "red",
+              text: 'Toggles the "Hard Deck". In Safe mode, the AI avoids generating code that interacts with your operating system. Unsafe mode allows for advanced scripting requiring desanitised DCS environments.',
+            },
+          ],
+        },
+      ],
     },
     librarian: {
       subtitle: "The Librarian",
-      text: "The Architect prioritises accuracy through its \"Code-First Librarian,\" which references live Lua source code from GitHub. When you explore a class like \"Airboss,\" the system analyses the current function signatures to ensure the advice and code it provides are fully aligned with the latest framework updates."
-    }
+      text: 'The Architect prioritises accuracy through its "Code-First Librarian," which references live Lua source code from GitHub. When you explore a class like "Airboss," the system analyses the current function signatures to ensure the advice and code it provides are fully aligned with the latest framework updates.',
+    },
   },
   tactics: {
     prompt: {
       subtitle: "Communication Protocols",
       cards: [
         {
-            type: "trap",
-            title: "The Ambiguity Trap",
-            example: "\"Make a tanker mission.\"",
-            explanationLabel: "Why results vary:",
-            explanation: "Without specific details on frameworks, unit names, or zones, the AI must guess your requirements, which often leads to generic or unusable placeholders."
+          type: "trap",
+          title: "The Ambiguity Trap",
+          example: '"Make a tanker mission."',
+          explanationLabel: "Why results vary:",
+          explanation:
+            "Without specific details on frameworks, unit names, or zones, the AI must guess your requirements, which often leads to generic or unusable placeholders.",
         },
         {
-            type: "strike",
-            title: "The Precision Strike",
-            example: "\"Create a MOOSE Recovery Tanker. The unit name in ME is 'Texaco-1'. It should orbit in a zone called 'TankerZone' at 15,000ft. Set frequency to 251 MHz AM.\"",
-            explanationLabel: "Why it succeeds:",
-            explanation: "By providing the framework, object names, and spatial data, you enable the AI to focus entirely on correct syntax and logical integration."
-        }
-      ]
+          type: "strike",
+          title: "The Precision Strike",
+          example:
+            "\"Create a MOOSE Recovery Tanker. The unit name in ME is 'Texaco-1'. It should orbit in a zone called 'TankerZone' at 15,000ft. Set frequency to 251 MHz AM.\"",
+          explanationLabel: "Why it succeeds:",
+          explanation:
+            "By providing the framework, object names, and spatial data, you enable the AI to focus entirely on correct syntax and logical integration.",
+        },
+      ],
     },
     errors: {
       subtitle: "Refining the Output",
       items: [
-        { label: "\"It didn't work.\"", text: "To help the AI diagnose an issue, provide the specific error from your `dcs.log`. This allows the system to identify exactly where the logic failed." },
-        { label: "Context Saturation.", text: "In very long sessions, the AI may lose track of earlier details. Use the \"New Mission\" button to maintain high precision for new logic blocks." },
-        { label: "The Complex Request.", text: "To get the most out of the AI, try building your mission in stages. Start with a single system; once that is refined and verified, move on to the next component." }
-      ]
-    }
+        {
+          label: '"It didn\'t work."',
+          text: "To help the AI diagnose an issue, provide the specific error from your `dcs.log`. This allows the system to identify exactly where the logic failed.",
+        },
+        {
+          label: "Context Saturation.",
+          text: 'In very long sessions, the AI may lose track of earlier details. Use the "New Mission" button to maintain high precision for new logic blocks.',
+        },
+        {
+          label: "The Complex Request.",
+          text: "To get the most out of the AI, try building your mission in stages. Start with a single system; once that is refined and verified, move on to the next component.",
+        },
+      ],
+    },
   },
   developer: {
     intent: {
       subtitle: "Developer Intention",
-      text: "The Architect is designed to amplify your creativity, not replace it. By handling the heavy lifting of syntax and documentation, it frees you to refine the tactical environment. Think of it as an insightful assistant that ensures your technical execution is as sharp as your mission design."
+      text: "The Architect is designed to amplify your creativity, not replace it. By handling the heavy lifting of syntax and documentation, it frees you to refine the tactical environment. Think of it as an insightful assistant that ensures your technical execution is as sharp as your mission design.",
     },
     inspiration: {
       subtitle: "The Project Origin",
       title: "Bridging the Gap",
       text: "My journey into mission building began with a desire for deeper immersion. Long before I looked at code, I was focused on the physical and audio experience of flight—building custom switch panels with **Arduino** and **DCS-BIOS**, and relying on tools like **VAICOM** and **SRS** to manage the cockpit while flying in VR. As I eventually moved toward creating my own scenarios, I found that even simple missions were often inhibited by the limitations of the Mission Editor interface. While I recognised the power of scripting, the complexity of frameworks like **MOOSE** felt like a significant barrier. I spent hours watching tutorials, particularly the **'Unwanted DCS Tutorials'** by **Christian Franz**, which introduced me to his earlier videos and the logic behind **DML**. When I began experimenting with AI to generate scripts, I quickly found that standard models were too inaccurate for such specific work. This project was created to solve that. The goal is not to replace or overshadow the incredible work done by the many **MOOSE developers** and the creator of **DML**, but rather to make their powerful frameworks accessible to novices. By directing the AI to the actual source code of these libraries, I hope to help others get past the 'syntax wall' and focus on the creative side of mission design.",
-      author: `— ${AUTHOR_CREDIT}`
+      author: `— ${AUTHOR_CREDIT}`,
     },
     stack: {
       subtitle: "Stack Architecture",
       items: [
-        "Framework: React 18 + TypeScript",
+        "Framework: React 19 + TypeScript",
         "Styling: Tailwind CSS",
         "Intelligence: Google Gemini Pro/Flash (via @google/genai)",
-        "Storage: LocalStorage (No Backend)",
-        "Deployment: GitHub Pages + Vite"
-      ]
-    }
+        "Storage: IndexedDB (Client-Side Database)",
+        "Deployment: GitHub Pages + Vite",
+      ],
+    },
   },
   controls: {
     navigation: {
       title: "Global Navigation",
       items: [
-        { keys: ['?'], description: "Toggle Controls Overlay" },
-        { keys: ['Ctrl', 'B'], description: "Toggle Sidebar" },
-        { keys: ['Alt', 'N'], description: "Create New Mission" },
-        { keys: ['Alt', '←/→'], description: "Cycle Missions" }
-      ]
+        { keys: ["?"], description: "Toggle Controls Overlay" },
+        { keys: ["Ctrl", "B"], description: "Toggle Sidebar" },
+        { keys: ["Alt", "N"], description: "Create New Mission" },
+        { keys: ["Alt", "←/→"], description: "Cycle Missions" },
+      ],
     },
     editor: {
       title: "Editor",
       items: [
-        { keys: ['Ctrl', 'Enter'], description: "Send Message" },
-        { keys: ['Enter'], description: "Insert New Line" },
-        { keys: ['/'], description: "Focus Input Box" }
-      ]
+        { keys: ["Ctrl", "Enter"], description: "Send Message" },
+        { keys: ["Enter"], description: "Insert New Line" },
+        { keys: ["/"], description: "Focus Input Box" },
+      ],
     },
     system: {
       title: "System",
       items: [
-        { keys: ['Esc'], description: "Stop Generation / Close" },
-        { keys: ['Ctrl', 'L'], description: "Clear Chat History" }
-      ]
-    }
+        { keys: ["Esc"], description: "Stop Generation / Close" },
+        { keys: ["Ctrl", "L"], description: "Clear Chat History" },
+      ],
+    },
   },
   intel: {
     subtitle: "Community Resources",
     links: [
-      { 
-        title: "Mission Architect", 
+      {
+        title: "Mission Architect",
         author: "the filthymanc",
-        description: "The official repository. Check here for changelogs, source code, and to report bugs or request features.",
-        url: "https://github.com/filthymanc/Mission-Architect-for-DCS-World" 
+        description:
+          "The official repository. Check here for changelogs and source code.",
+        url: "https://github.com/filthymanc/Mission-Architect-for-DCS-World",
       },
-      { 
-        title: "MOOSE Framework", 
+      {
+        title: "Report Issue / Contact Developer",
+        author: "GitHub Issues",
+        description:
+          "Found a bug or have a feature request? Open a ticket on the official issue tracker.",
+        url: "https://github.com/filthymanc/Mission-Architect-for-DCS-World/issues",
+      },
+      {
+        title: "MOOSE Framework",
         author: "FlightControl-Master",
-        description: "The standard for object-oriented scripting in DCS. Essential for complex AI behavior and dispatching.",
-        url: "https://github.com/FlightControl-Master/MOOSE" 
+        description:
+          "The standard for object-oriented scripting in DCS. Essential for complex AI behavior and dispatching.",
+        url: "https://github.com/FlightControl-Master/MOOSE",
       },
-      { 
-        title: "DML (Dynamic Mission Library)", 
+      {
+        title: "DML (Dynamic Mission Library)",
         author: "Christian Franz (cfrag)",
-        description: "A powerful library focused on Mission Editor attributes and zone-based logic, minimizing Lua code.",
-        url: "https://github.com/csofranz/DML" 
+        description:
+          "A powerful library focused on Mission Editor attributes and zone-based logic, minimizing Lua code.",
+        url: "https://github.com/csofranz/DML",
       },
-      { 
-        title: "DCS Unwanted Tutorials & DML Fundamentals", 
+      {
+        title: "DCS Unwanted Tutorials & DML Fundamentals",
         author: "Christian Franz (cfrag)",
-        description: "A series of insightful tutorials using unwritten rules in DCS Mission Editor, and how DML can transform mission creation",
-        url: "https://youtube.com/@christianfranz4866?si=lK8ZswCH088hVFhX" 
-      }
-    ]
+        description:
+          "A series of insightful tutorials using unwritten rules in DCS Mission Editor, and how DML can transform mission creation",
+        url: "https://youtube.com/@christianfranz4866?si=lK8ZswCH088hVFhX",
+      },
+    ],
   },
   legal: {
     sovereignty: {
       subtitle: "Data Sovereignty",
       items: [
-        { label: "Zero-Logging:", text: "This application runs entirely in your browser. We cannot see your API keys or scripts." },
-        { label: "API Key:", text: "Stored in `localStorage`. Sent directly to Google APIs only." },
-        { label: "AI Processing:", text: "Chats are processed by Google Gemini. Refer to Google Generative AI Terms." }
-      ]
+        {
+          label: "Zero-Logging:",
+          text: "This application runs entirely in your browser. We cannot see your API keys or scripts.",
+        },
+        {
+          label: "API Key:",
+          text: "Stored in `localStorage`. Sent directly to Google APIs only.",
+        },
+        {
+          label: "AI Processing:",
+          text: "Chats are processed by Google Gemini. Refer to Google Generative AI Terms.",
+        },
+      ],
     },
     credits: {
       subtitle: "Credits & Notices",
       items: [
-        { title: "MOOSE", author: "FlightControl-Master", license: "GNU GPL v3.0" },
-        { title: "DML", author: "Christian Franz (cfrag)", license: "MIT License" },
-        { title: "React & Ecosystem", author: "Meta & Community", license: "MIT License" },
-        { title: "Google GenAI SDK", author: "Google LLC", license: "Apache 2.0" }
-      ]
+        {
+          title: "DCS World",
+          author: "Eagle Dynamics",
+          license: "Trademark Disclaimer",
+        },
+        {
+          title: "MOOSE",
+          author: "FlightControl-Master",
+          license: "GNU GPL v3.0",
+        },
+        {
+          title: "DML",
+          author: "Christian Franz (cfrag)",
+          license: "MIT License",
+        },
+        {
+          title: "React & Ecosystem",
+          author: "Meta & Community",
+          license: "MIT License",
+        },
+        {
+          title: "Tailwind CSS",
+          author: "Tailwind Labs",
+          license: "MIT License",
+        },
+        {
+          title: "Vite",
+          author: "Yuxi (Evan) You",
+          license: "MIT License",
+        },
+        {
+          title: "idb",
+          author: "Jake Archibald",
+          license: "ISC License",
+        },
+        {
+          title: "Google GenAI SDK",
+          author: "Google LLC",
+          license: "Apache 2.0",
+        },
+      ],
     },
     license: {
       subtitle: "GNU General Public License v3.0",
-      disclaimer: "This is free software: you can redistribute it and/or modify it. There is NO WARRANTY, to the extent permitted by law.",
+      disclaimer:
+        "This is free software: you can redistribute it and/or modify it. There is NO WARRANTY, to the extent permitted by law.",
       /* Fix: Escaped backticks within the license text to prevent syntax errors and premature string termination */
       text: `GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
@@ -421,7 +510,7 @@ Also add information on how to contact you by electronic and paper mail.
 
 The hypothetical commands \`show w\` and \`show c\` should show the appropriate parts of the General Public License.  Of course, your program's commands might be different; for a GUI interface, you would use an "about box".
 
-  You should also get your employer (if you work as a programmer) or school, if any, to sign a "copyright disclaimer" for the program, if necessary. For more information on this, and how to apply and follow the GNU GPL, see <https://www.gnu.org/licenses/>.`
-    }
-  }
+  You should also get your employer (if you work as a programmer) or school, if any, to sign a "copyright disclaimer" for the program, if necessary. For more information on this, and how to apply and follow the GNU GPL, see <https://www.gnu.org/licenses/>.`,
+    },
+  },
 };
