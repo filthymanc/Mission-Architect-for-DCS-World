@@ -88,7 +88,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
         >
           <div className="space-y-2">
             <div className="flex justify-between items-center px-1">
-              <label className="text-xs font-bold text-app-secondary uppercase tracking-wider">
+              <label
+                htmlFor="apiKey"
+                className="text-xs font-bold text-app-secondary uppercase tracking-wider"
+              >
                 Gemini API Key
               </label>
               <a
@@ -116,12 +119,14 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
             </div>
             <div className="relative">
               <input
+                id="apiKey"
+                name="apiKey"
+                autoComplete="current-password"
                 type="password"
-                value={tempKey}
-                onChange={(e) => setTempKey(e.target.value)}
                 placeholder="Paste your key here..."
-                disabled={isVerifying}
                 className="w-full bg-app-canvas border border-app-highlight rounded-lg pl-4 pr-10 py-3 text-app-primary focus:outline-none focus:border-app-brand focus:ring-1 focus:ring-app-brand disabled:opacity-50 transition-all text-sm placeholder-app-tertiary"
+                value={tempKey} // Must bind to state
+                onChange={(e) => setTempKey(e.target.value)} // Must update state
               />
               <div className="absolute right-3 top-3 text-app-tertiary">
                 <svg
