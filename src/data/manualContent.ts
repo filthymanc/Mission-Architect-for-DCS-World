@@ -179,6 +179,7 @@ export const MANUAL_CONTENT = {
         description:
           "The official repository. Check here for changelogs and source code.",
         url: "https://github.com/filthymanc/Mission-Architect-for-DCS-World",
+        type: "github",
       },
       {
         title: "Report Issue / Contact Developer",
@@ -186,6 +187,7 @@ export const MANUAL_CONTENT = {
         description:
           "Found a bug or have a feature request? Open a ticket on the official issue tracker.",
         url: "https://github.com/filthymanc/Mission-Architect-for-DCS-World/issues",
+        type: "github",
       },
       {
         title: "MOOSE Framework",
@@ -193,6 +195,7 @@ export const MANUAL_CONTENT = {
         description:
           "The standard for object-oriented scripting in DCS. Essential for complex AI behavior and dispatching.",
         url: "https://github.com/FlightControl-Master/MOOSE",
+        type: "github",
       },
       {
         title: "DML (Dynamic Mission Library)",
@@ -200,6 +203,7 @@ export const MANUAL_CONTENT = {
         description:
           "A powerful library focused on Mission Editor attributes and zone-based logic, minimizing Lua code.",
         url: "https://github.com/csofranz/DML",
+        type: "github",
       },
       {
         title: "DCS Unwanted Tutorials & DML Fundamentals",
@@ -207,6 +211,30 @@ export const MANUAL_CONTENT = {
         description:
           "A series of insightful tutorials using unwritten rules in DCS Mission Editor, and how DML can transform mission creation",
         url: "https://youtube.com/@christianfranz4866?si=lK8ZswCH088hVFhX",
+        type: "youtube",
+      },
+      {
+        title: "DCS World Scripting Discord",
+        author: "Community",
+        description:
+          "The primary hub for real-time help with MOOSE, MIST, and DML. It's where the authors of these frameworks hang out.",
+        url: "https://discord.gg/gj68fm969S",
+        type: "discord",
+      },
+      {
+        title: "Hoggit Wiki (Scripting Engine)",
+        author: "Hoggit Community",
+        description:
+          "The definitive reference for the underlying DCS Simulator Scripting Engine (SSE).",
+        url: "https://wiki.hoggitworld.com/view/Simulator_Scripting_Engine_Documentation",
+        type: "web",
+      },
+      {
+        title: "Eagle Dynamics Forums (Mission Editor)",
+        author: "Eagle Dynamics",
+        description: "The official forum for mission building discussions.",
+        url: "https://forum.dcs.world/forum/130-mission-editor/",
+        type: "web",
       },
     ],
   },

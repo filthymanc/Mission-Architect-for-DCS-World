@@ -10,6 +10,7 @@
  */
 
 import React, { useState } from "react";
+import { GithubIcon, YoutubeIcon, DiscordIcon, GlobeIcon } from "./Icons";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { APP_VERSION } from "../../core/version";
 import { MANUAL_CONTENT } from "../../data/manualContent";
@@ -490,43 +491,70 @@ const FieldManual: React.FC<FieldManualProps> = ({ isOpen, onClose }) => {
                 </h3>
 
                 <div className="grid grid-cols-1 gap-4">
-                  {content.intel.links.map((link, idx) => (
-                    <a
-                      key={idx}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block p-5 bg-app-canvas border border-app-border hover:border-orange-500/50 hover:bg-app-surface rounded-xl transition-all group border-l-4 border-l-orange-500"
-                    >
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h4 className="font-bold text-app-primary group-hover:text-orange-400 transition-colors flex items-center gap-2">
-                            {link.title}
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-4 w-4 opacity-50"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                              />
-                            </svg>
-                          </h4>
-                          <p className="text-xs font-bold text-app-tertiary mt-1 mb-2">
-                            {link.author}
-                          </p>
+                  {content.intel.links.map((link, idx) => {
+                    // Define strict type for the link item
+                    interface LinkItem {
+                      title: string;
+                      url: string;
+                      author: string;
+                      description: string;
+                      type?: "github" | "youtube" | "discord" | "web" | "default";
+                    }
+                    const linkItem = link as LinkItem;
+                    const type = linkItem.type || "default";
+
+                    return (
+                      <a
+                        key={idx}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block p-5 bg-app-canvas border border-app-border hover:border-orange-500/50 hover:bg-app-surface rounded-xl transition-all group border-l-4 border-l-orange-500"
+                      >
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <h4 className="font-bold text-app-primary group-hover:text-orange-400 transition-colors flex items-center gap-2">
+                              {link.title}
+                              {type === "github" && (
+                                <GithubIcon className="h-4 w-4 opacity-50" />
+                              )}
+                              {type === "youtube" && (
+                                <YoutubeIcon className="h-4 w-4 opacity-50" />
+                              )}
+                              {type === "discord" && (
+                                <DiscordIcon className="h-4 w-4 opacity-50" />
+                              )}
+                              {type === "web" && (
+                                <GlobeIcon className="h-4 w-4 opacity-50" />
+                              )}
+                              {type === "default" && (
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-4 w-4 opacity-50"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                  />
+                                </svg>
+                              )}
+                            </h4>
+                            <p className="text-xs font-bold text-app-tertiary mt-1 mb-2">
+                              {link.author}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                      <p className="text-sm text-app-secondary leading-relaxed">
-                        {link.description}
-                      </p>
-                    </a>
-                  ))}
+                        <p className="text-sm text-app-secondary leading-relaxed">
+                          {link.description}
+                        </p>
+                      </a>
+                    );
+                  })}
                 </div>
               </div>
             )}
